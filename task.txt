@@ -1,0 +1,26 @@
+Next Meeting
+
+1. Remaining tables. -
+2. Provider registration API. -
+3. Provider Details API. -
+4. Save Jobs API.
+5. Save subscriptin API.
+6. List Jobs.
+7. List Subscription.
+
+
+Later Onn
+
+1. Artist Registration
+2. Artist Details. -
+3. Jobs list based on profession selected / Subscription list based on profession.    
+4. Apply Jobs -
+6. Appy for subscription. -
+
+
+22-11-2020 
+
+1. changes UUIDs to the Numeric IDs. - Done
+2. Login 
+3. Free & Paid Users to apply one job multiple times.
+4. Jobs list based on profession selected / Subscription list based on profession.
