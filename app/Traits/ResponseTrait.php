@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace App\Traits;
 
@@ -14,7 +14,7 @@ use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Handler\CurlHandler;
 use Exception;
 
-trait ResponseTrait 
+trait ResponseTrait
 {
     /**
      * Status code of response
@@ -23,8 +23,8 @@ trait ResponseTrait
      */
      protected $statusCode = 200;
 
-    /** 
-     * Fractal Manager Instance 
+    /**
+     * Fractal Manager Instance
      */
     protected $fractal;
 
@@ -54,9 +54,9 @@ trait ResponseTrait
      *  @param Manager $fractal
      *  @return void
      */
-    public function setFractal(Manager $fractal)
+    public function setFractal()
     {
-        $this->fractal = $fractal;
+        $this->fractal = new Manager();
     }
 
     /**
@@ -65,7 +65,7 @@ trait ResponseTrait
     * @param string $grantType what type of grant type should be proxied
     * @param array $data the data to send to the server
     */
-    
+
     public function proxy($grantType, array $data = [])
     {
         if(empty(env('PASSPORT_CLIENT_ID')) || empty(env('PASSPORT_CLIENT_SECRET'))) {
@@ -78,15 +78,15 @@ trait ResponseTrait
             'grant_type'    => $grantType,
             'scope'         => ''
         ]);
-          
-        $client = new \GuzzleHttp\Client();      
-        
+
+        $client = new \GuzzleHttp\Client();
+
         try {
             $result = $client->request('POST', url('oauth/token'), [
                 'form_params' => $data,
                 'http_errors' => false
-            ]);  
-        
+            ]);
+
         } catch (ClientException | RequestException | Exception $e) {
             throw new Exception("{$e->getMessage()}");
         }
@@ -96,63 +96,55 @@ trait ResponseTrait
 
     /**
      * Return Collection response from the Application
-     *  
+     *
      * @param array|LengthAwarePaginator|\Illuminate\Database\Eloquent\Collection $collection
      * @param \Closure|TransformerAbstract $callback;
      * @return \Illuminate\Http\JsonResponse
      */
     public function respondWithCollection($collection, $callback, bool $success, int $status, string $message = '', $extension = [])
-    {   
+    {
+        $this->fractal = new Manager();
         $resources = new Collection($collection, $callback);
-        
+
         if(empty($collection)) {
             $collection = new \Illuminate\Pagination\LengthAwarePaginator([], 0, 10);
             $resources = new Collection($collection, $callback);
         }
-        
+
         $resources->setPaginator(new IlluminatePaginatorAdapter($collection));
-        
+
         $rootScope = $this->fractal->createData($resources);
-        
+
         return $this->responseJson($success, $status, $message, [], $rootScope->toArray(), $extension);
     }
     /**
      * Return Collection response from the Application
-     *  
+     *
      * @param array|\Illuminate\Database\Eloquent\Collection $collection
      * @param \Closure|TransformerAbstract $callback;
      * @return \Illuminate\Http\JsonResponse
      */
     public function respondWithCollectionAll($collection, $callback, bool $success, int $status, string $message = '', $extension = [])
     {
+        $this->fractal = new Manager();
         $resources = new Collection($collection, $callback);
-
-        /* if(empty($collection)) {
-            $collection = new \Illuminate\Pagination\LengthAwarePaginator([], 0, 10);
-            $resources = new Collection($collection, $callback);
-        } */
-        
-        // $resources->setPaginator(new IlluminatePaginatorAdapter($collection));
-        
         $rootScope = $this->fractal->createData($resources);
-        
+
         return $this->responseJson($success, $status, $message, [], $rootScope->toArray(), $extension);
     }
 
     /**
      * Return Single Item response from the Application
-     * 
+     *
      * @param Model $item
      * @param \Closure|TransformerAbstract $callback
      * @return \Illuminate\Http\JsonResponse
      */
     public function respondWithItem($item, $callback, bool $success, int $status, string $message = '', $extension = [])
-    {   
+    {
         $this->fractal = new Manager();
         $resources = new Item($item, $callback);
         $rootScope = $this->fractal->createData($resources);
-      //  $data = array_merge($rootScope->toArray(),['progress'=>80]);
-    
 
         return $this->responseJson($success, $status, $message, [],$rootScope->toArray(), $extension);
     }
@@ -162,23 +154,23 @@ trait ResponseTrait
         $resources = new Item($item, $callback);
         $rootScope = $this->fractal->createData($resources);
         $data = array_merge($rootScope->toArray(),['progress'=>(int)$progress]);
-    
+
 
         return $this->responseJson($success, $status, $message, [],$data, $extension);
     }
 
-    /** 
+    /**
      * HTTP response in JSON Format
      * @param bool $success - Success Status [true|false]
      * @param int $status - HTTP Status Code [eg. 200]
      * @param string $message - Response Message
-     * @param array $error - Response Error 
+     * @param array $error - Response Error
      * @param array|object $data - Response Data
      * @return \Illuminate\Http\JsonResponse $response
      */
     public function responseJson(bool $success, int $status, string $message = '', array $error = [], $data = [], $extension = []) {
         $result_data = !empty($data) ? ($this->findKey($data, 'data') ? $data : ['data' => $data]) : [];
-        
+
         $error = empty($error) ? (object) $error : $error;
 
         return \response()->json(array_merge([
@@ -192,7 +184,7 @@ trait ResponseTrait
     function findKey($array, $keySearch)
     {
         foreach ($array as $key => $item) {
-            
+
             if ($key == $keySearch) {
                 return true;
             } elseif (is_array($item) && findKey($item, $keySearch)) {
@@ -202,6 +194,6 @@ trait ResponseTrait
             }
         }
     }
-}   
+}
 
 ?>

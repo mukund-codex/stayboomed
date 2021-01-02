@@ -15,15 +15,15 @@ use Illuminate\Validation\Rule;
 use Carbon\Carbon;
 
 class UserController extends Controller
-{    
+{
     public function __construct(UserRepository $userRespository, UserTransformer $userTransformer, ArtistUserRepository $artistUserRepository, ArtistUserTransformer $artistUserTransformers)
     {
-        
+
         $this->userRespository = $userRespository;
         $this->userTransformer = $userTransformer;
         $this->artistUserRepository = $artistUserRepository;
         $this->artistUserTransformer = $artistUserTransformers;
-        
+
     }
 
     /**
@@ -81,7 +81,7 @@ class UserController extends Controller
             'state_id' => 'required|exists:state_master,id',
             'city_id' => 'required|exists:city_master,id',
             'gender' => 'required|in:male,female,other'
-            
+
         ];
 
         $validatorResponse = $this->validateRequest($request, $rules);
@@ -90,8 +90,8 @@ class UserController extends Controller
             return $this->responseJson(false, HTTPResponse::HTTP_BAD_REQUEST, 'Error', $validatorResponse);
         }
 
-        $user = $this->userRespository->save($request->all()); 
-        
+        $user = $this->userRespository->save($request->all());
+
         return $this->respondWithItem($user, $this->userTransformer, true, HttpResponse::HTTP_CREATED, 'User Created');
     }
 
@@ -110,7 +110,7 @@ class UserController extends Controller
             'dob' => 'required|date',
             'gender' => 'required|in:male,female,other',
             'address' => 'required'
-            
+
         ];
 
         $validatorResponse = $this->validateRequest($request, $rules);
@@ -119,8 +119,8 @@ class UserController extends Controller
             return $this->responseJson(false, HTTPResponse::HTTP_BAD_REQUEST, 'Error', $validatorResponse);
         }
 
-        $user = $this->artistUserRepository->save($request->all()); 
-        
+        $user = $this->artistUserRepository->save($request->all());
+
         return $this->respondWithItem($user, $this->artistUserTransformer, true, HttpResponse::HTTP_CREATED, 'User Created');
 
     }
@@ -177,7 +177,7 @@ class UserController extends Controller
             'profession_id' => 'uuid|exists:profession_master,id',
             'dob' => 'date',
             'gender' => 'required|in:male,female,other'
-            
+
         ];
 
         $validatorResponse = $this->validateRequest($request, $rules);
@@ -193,7 +193,7 @@ class UserController extends Controller
         }
 
         $updatedUser = $this->userRespository->find($id);
-        return $this->respondWithItem($updatedUser, $this->userTransformer, true, 201, 'Provider Updated');  
+        return $this->respondWithItem($updatedUser, $this->userTransformer, true, 201, 'Provider Updated');
     }
 
     public function updateArtist(Request $request, $id) {
@@ -211,7 +211,7 @@ class UserController extends Controller
             'dob' => 'required|date',
             'gender' => 'required|in:male,female,other',
             'address' => 'required'
-            
+
         ];
 
         $validatorResponse = $this->validateRequest($request, $rules);
@@ -227,7 +227,7 @@ class UserController extends Controller
         }
 
         $updatedUser = $this->artistUserRepository->find($id);
-        return $this->respondWithItem($updatedUser, $this->artistUserTransformer, true, 201, 'Artist Updated');  
+        return $this->respondWithItem($updatedUser, $this->artistUserTransformer, true, 201, 'Artist Updated');
 
     }
 
@@ -241,8 +241,8 @@ class UserController extends Controller
     {
         //
         $user = $this->userRespository->find($id);
-        
-        
+
+
         if (!$user ) {
             return $this->responseJson(false, 400, 'User Not Found', []);
         }
@@ -258,7 +258,7 @@ class UserController extends Controller
 
     public function login(Request $request)
     {
-        
+
         $rules = [
             'username' => 'required|exists:users,username',
             'password' => 'required',
@@ -269,7 +269,7 @@ class UserController extends Controller
             'os' => 'regex:/^[a-zA-Z0-9 _-]*$/',
             'app_version' => 'required|max:10'
         ];
-        
+
 
         $messages = [
             'username.exists' => 'Incorrect Username or Password'
@@ -280,7 +280,7 @@ class UserController extends Controller
         if ($validatorResponse !== true) {
             return $this->responseJson(false, 400, 'Error', $validatorResponse);
         }
-        
+
         $username = $request->input('username');
         $password = $request->input('password');
         $user_type = $request->input('user_type');
@@ -289,15 +289,15 @@ class UserController extends Controller
         $device_type = $request->input('device_type');
         $os = $request->input('os');
         $app_version = $request->input('app_version');
-        
+
         $login = $this->userRepository->getUser(['username' => $username]);
-        
+
         if(! $login) {
             return $this->responseJson(false, 400, 'Incorrect Username or Password');
         }
-        
-        if($this->userRepository->isLoginCheck($password, $login->password)) { 
-            
+
+        if($this->userRepository->isLoginCheck($password, $login->password)) {
+
             $attemptLogin = $this->proxy('password', [
                 'username'  =>  $username,
                 'password'  =>  $password,
@@ -310,7 +310,7 @@ class UserController extends Controller
 
 
             $login_count = count(\App\Models\User::find($login->id)->deviceInfo()->get());
-            
+
             if($device_id) {
                 $device_info = [];
                 $device_info['user_id'] = $login->id;
@@ -324,7 +324,7 @@ class UserController extends Controller
 
                 $deviceData = \App\Models\DeviceInfo::create($device_info);
             }
-  
+
         $v = VersionControl::where('is_active',true)->select('android_version','ios_version')->first();
             $attemptLogin = array_merge($v->toArray(),$attemptLogin, ['campaign_code' => $campaign_code,'login_count'=>$login_count], $login->toArray());
             return $this->responseJson(true, 200, 'Login Successfull', [], $attemptLogin);
@@ -350,7 +350,7 @@ class UserController extends Controller
                 'revoked' => true
             ]);
 
-        $accessToken->revoke(); 
+        $accessToken->revoke();
         return $this->responseJson(true, 200, 'Logout out Successfully');
     }
 }

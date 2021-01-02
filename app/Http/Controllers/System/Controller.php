@@ -21,11 +21,9 @@ abstract class Controller extends BaseController
     *
     * @param Manager|null $fractal
     */
-    public function __construct(Manager $fractal = null)
+    public function __construct()
     {
-        $fractal = $fractal === null ? new Manager() : $fractal;
-        // $fractal->setSerializer(new JsonDataSerializer());
-        $this->setFractal($fractal);
+        $this->setFractal();
     }
 
 
@@ -43,9 +41,9 @@ abstract class Controller extends BaseController
         $validator = \Validator::make($request->all(), $rules, $messages);
         if ($validator->fails()) {
             $errorMessages = $validator->errors()->messages();
-            
+
             // $errorMessages = array_merge($errorMessages, $messages);
-            
+
             // create error message by using key and value
             foreach ($errorMessages as $key => $value) {
                 $errorMessages[$key] = $value[0];
@@ -64,7 +62,7 @@ abstract class Controller extends BaseController
      */
     protected function filteredRequestParams(Request $request, array $include): array
     {
-        $this->filtered = []; 
+        $this->filtered = [];
         if(\is_array($request->all())) {
             foreach ($request->all() as $key => $value) {
                 if(\in_array($key, $include) && $request->filled($key)) {
@@ -93,7 +91,7 @@ abstract class Controller extends BaseController
             }
             return $newArr;
         }
-        return $arr;    
+        return $arr;
     }
 
     /**
@@ -114,17 +112,17 @@ abstract class Controller extends BaseController
 
         if(count($table_group) > 0) {
             foreach ($table_group as $key => $value) {
-                
+
                 $_filter_keys = \array_intersect_key($filter_params, $recursive_keys, $operator, \array_flip($value));
                 $_recursive_keys = \array_intersect_key($recursive_keys, $filter_params, $operator, \array_flip($value));
                 $_operator = \array_intersect_key($operator, $filter_params, $recursive_keys, \array_flip($value));
-                
+
                 $complex[$key] = \array_filter(array_map(function ($column, $operator, $value) {
                     if($column && $operator && $value) {
                         return array($column, $operator, (\strtoupper($operator) == "ILIKE") ? "%$value%" : $value);
                     }
                 }, $_recursive_keys, $_operator, $_filter_keys));
-            }            
+            }
         } else {
             foreach ($filter_params as $key => $value) {
                 $single = [];
