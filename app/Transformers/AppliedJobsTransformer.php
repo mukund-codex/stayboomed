@@ -13,8 +13,8 @@ class AppliedJobsTransformer extends TransformerAbstract
             'id' =>  $appliedJobs->id,
             'user_id' => $appliedJobs->user_id,
             'job_id' => $appliedJobs->job_id,
-            'user_data' => $appliedJobs->users,
-            'job_data' => $appliedJobs->jobs
+            'user_data' => $appliedJobs->user,
+            'job_data' => $appliedJobs->job
         ];
 
         return $formatterDetails;

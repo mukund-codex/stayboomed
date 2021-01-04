@@ -35,7 +35,7 @@ $router->group(
         ], function() use ($router) {
 
             $router->group(
-                ['prefix' => 'user', 'namespace' => 'User'], 
+                ['prefix' => 'user', 'namespace' => 'Master'], 
                 function() use ($router) {
                     $router->get('', ['uses' => 'UserController@index']);
                     $router->post('/create', 'UserController@register');

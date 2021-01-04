@@ -13,8 +13,7 @@ class PaidUsersTransformer extends TransformerAbstract
             'id' =>  $paidUsers->id,
             'user_id' => $paidUsers->user_id,
             'provider_id' => $paidUsers->provider_id,
-            'user_data' => $paidUsers->users,
-            'job_data' => $paidUsers->jobs
+            'user_data' => $paidUsers->users
         ];
 
         return $formatterDetails;

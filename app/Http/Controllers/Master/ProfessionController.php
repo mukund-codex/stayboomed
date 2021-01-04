@@ -29,9 +29,25 @@ class ProfessionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         //
+        if (\array_key_exists('id', $request->all())) {
+            if(! Uuid::isValid($request->get('id'))){
+                return $this->responseJson(false, 404, 'Record Not Found', ['id' => 'Invalid data']);
+            }
+        }
+
+        $data = $this->professionRespository->filtered(
+            $this->recursive_change_key(
+            $this->filteredRequestParams($request, ['id','name']),
+            ["id" => "profession_master.id", "name"=>"profession_master.name"]
+            ),[ "profession_master.id" => "=", "profession_master.name" => "ILIKE"]
+            )->paginate();
+
+        $uploadParameters['fields'] = ['name'];
+
+        return $this->respondWithCollection($data, $this->professionTransformer, true, HttpResponse::HTTP_OK, 'Profession List', $uploadParameters);
     }
 
     /**

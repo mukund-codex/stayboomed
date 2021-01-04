@@ -16,10 +16,10 @@ use Carbon\Carbon;
 
 class UserController extends Controller
 {
-    public function __construct(UserRepository $userRespository, UserTransformer $userTransformer, ArtistUserRepository $artistUserRepository, ArtistUserTransformer $artistUserTransformers)
+    public function __construct(UserRepository $userRepository, UserTransformer $userTransformer, ArtistUserRepository $artistUserRepository, ArtistUserTransformer $artistUserTransformers)
     {
 
-        $this->userRespository = $userRespository;
+        $this->userRepository = $userRepository;
         $this->userTransformer = $userTransformer;
         $this->artistUserRepository = $artistUserRepository;
         $this->artistUserTransformer = $artistUserTransformers;
@@ -260,9 +260,9 @@ class UserController extends Controller
     {
 
         $rules = [
-            'username' => 'required|exists:users,username',
+            'email' => 'required|exists:users,email',
             'password' => 'required',
-            'user_type' => 'required|in:artist, provider',
+            'user_type' => 'required|in:artist,provider',
             'device_id' => 'required|max:200',
             'device_type' => 'required|in:android,ios',
             'device_name' => 'required|max:150',
@@ -272,7 +272,7 @@ class UserController extends Controller
 
 
         $messages = [
-            'username.exists' => 'Incorrect Username or Password'
+            'email.exists' => 'Incorrect Username or Password'
         ];
 
         $validatorResponse = $this->validateRequest($request, $rules, $messages);
@@ -281,7 +281,7 @@ class UserController extends Controller
             return $this->responseJson(false, 400, 'Error', $validatorResponse);
         }
 
-        $username = $request->input('username');
+        $email = $request->input('email');
         $password = $request->input('password');
         $user_type = $request->input('user_type');
         $device_id = $request->input('device_id');
@@ -290,7 +290,7 @@ class UserController extends Controller
         $os = $request->input('os');
         $app_version = $request->input('app_version');
 
-        $login = $this->userRepository->getUser(['username' => $username]);
+        $login = $this->userRepository->getUser(['email' => $email]);
 
         if(! $login) {
             return $this->responseJson(false, 400, 'Incorrect Username or Password');
@@ -299,11 +299,11 @@ class UserController extends Controller
         if($this->userRepository->isLoginCheck($password, $login->password)) {
 
             $attemptLogin = $this->proxy('password', [
-                'username'  =>  $username,
+                'email'  =>  $email,
                 'password'  =>  $password,
                 'provider' => 'users'
             ]);
-
+            dd($attemptLogin);
             if(array_key_exists('error', $attemptLogin)) {
                 return $this->responseJson(false, 401, 'Error', $attemptLogin, []);
             }

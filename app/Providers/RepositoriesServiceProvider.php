@@ -47,7 +47,7 @@ use App\Repositories\Eloquent\{
     EloquentArtistDetailsRepository,
     EloquentAppliedJobsRepository,
     EloquentPaidUsersRepository,
-    EloquentFeedackRepository
+    EloquentFeedbackRepository
 };
 
 class RepositoriesServiceProvider extends ServiceProvider

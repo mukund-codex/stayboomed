@@ -39,6 +39,6 @@ class Feedback extends Model
     //];
     
     public function users() {
-        return $this->belongsTo(Users::class, 'user_id', 'id');
+        return $this->belongsTo(User::class, 'user_id', 'id');
     }
 }

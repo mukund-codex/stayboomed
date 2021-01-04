@@ -86,11 +86,12 @@ trait ResponseTrait
                 'form_params' => $data,
                 'http_errors' => false
             ]);
-
+            dd($result);
         } catch (ClientException | RequestException | Exception $e) {
             throw new Exception("{$e->getMessage()}");
         }
         $data = json_decode((string) $result->getBody(), true);
+        dd($data);
         return $data;
     }
 
