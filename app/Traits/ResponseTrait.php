@@ -84,9 +84,8 @@ trait ResponseTrait
         try {
             $result = $client->request('POST', url('oauth/token'), [
                 'form_params' => $data,
-                'http_errors' => false
+                'http_errors' => true
             ]);
-            dd($result);
         } catch (ClientException | RequestException | Exception $e) {
             throw new Exception("{$e->getMessage()}");
         }

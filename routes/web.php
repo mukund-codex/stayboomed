@@ -176,6 +176,15 @@ $router->group(
                 $router->put('/update/{id:[0-9]}', 'FeedbackController@update');
                 $router->delete('/delete/{id:[0-9]}', ['uses' => 'FeedbackController@destroy']);
             });
+
+            $router->group(['prefix' => 'refer', 'namespace' => 'Master'], 
+            function() use ($router) {
+                $router->get('', ['uses' => 'ReferController@index']);
+                $router->get('/show/{id:[0-9]}', ['uses' => 'ReferController@show']);
+                $router->post('/create', 'ReferController@store');
+                $router->put('/update/{id:[0-9]}', 'ReferController@update');
+                $router->delete('/delete/{id:[0-9]}', ['uses' => 'ReferController@destroy']);
+            });
         });
     }
 );

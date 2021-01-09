@@ -16,7 +16,8 @@ use App\Models\{
     AppliedJobs,
     ArtistSubscription,
     PaidUsers,
-    Feedback
+    Feedback,
+    Refer
 };
 
 use App\Repositories\Contracts\{
@@ -32,7 +33,8 @@ use App\Repositories\Contracts\{
     AppliedJobsRepository,
     ArtistSubscriptionRepository,
     PaidUsersRepository,
-    FeedbackRepository
+    FeedbackRepository,
+    ReferRepository
 };
 
 use App\Repositories\Eloquent\{
@@ -47,7 +49,8 @@ use App\Repositories\Eloquent\{
     EloquentArtistDetailsRepository,
     EloquentAppliedJobsRepository,
     EloquentPaidUsersRepository,
-    EloquentFeedbackRepository
+    EloquentFeedbackRepository,
+    EloquentReferRepository
 };
 
 class RepositoriesServiceProvider extends ServiceProvider
@@ -110,6 +113,10 @@ class RepositoriesServiceProvider extends ServiceProvider
         $this->app->bind(FeedbackRepository::class, function () {
             return new EloquentFeedbackRepository(new Feedback());
         });
+
+        $this->app->bind(ReferRepository::class, function () {
+            return new EloquentReferRepository(new Refer());
+        });
     }
 
     /**
@@ -132,7 +139,8 @@ class RepositoriesServiceProvider extends ServiceProvider
             AppliedJobs::class,
             ArtistSubscription::class,
             PaidUsers::class,
-            Feedback::class
+            Feedback::class,
+            Refer::class
         ];
     }
 }

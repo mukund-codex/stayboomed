@@ -262,7 +262,7 @@ class UserController extends Controller
         $rules = [
             'email' => 'required|exists:users,email',
             'password' => 'required',
-            'user_type' => 'required|in:artist,provider',
+            // 'user_type' => 'required|in:artist,provider',
             'device_id' => 'required|max:200',
             'device_type' => 'required|in:android,ios',
             'device_name' => 'required|max:150',
@@ -283,7 +283,7 @@ class UserController extends Controller
 
         $email = $request->input('email');
         $password = $request->input('password');
-        $user_type = $request->input('user_type');
+        // $user_type = $request->input('user_type');
         $device_id = $request->input('device_id');
         $device_name = $request->input('device_name');
         $device_type = $request->input('device_type');
@@ -303,7 +303,7 @@ class UserController extends Controller
                 'password'  =>  $password,
                 'provider' => 'users'
             ]);
-            dd($attemptLogin);
+            
             if(array_key_exists('error', $attemptLogin)) {
                 return $this->responseJson(false, 401, 'Error', $attemptLogin, []);
             }
