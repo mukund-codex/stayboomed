@@ -75,6 +75,7 @@ class UserController extends Controller
             'fullname' => 'required|unique:users,fullname,NULL,id,deleted_at,NULL|regex:/^[\pL\s\-]+$/u|max:150|min:5',
             'designation' => 'alpha',
             'organisation' => 'alpha',
+            'username' => 'required|unique:users,username,NULL,id,deleted_at,NULL',
             'email' => 'required|email|unique:users,email,NULL,id,deleted_at,NULL',
             'password' => 'required|min:6',
             'number' => 'required|numeric:unique:users,number,NULL,id,deleted_at,NULL',
@@ -90,17 +91,23 @@ class UserController extends Controller
             return $this->responseJson(false, HTTPResponse::HTTP_BAD_REQUEST, 'Error', $validatorResponse);
         }
 
+        $referral_code = $this->generateReferralCode();
+
+        $data = $request->all();
+        $data['referral_code'] = $referral_code;
+
         $user = $this->userRespository->save($request->all());
 
         return $this->respondWithItem($user, $this->userTransformer, true, HttpResponse::HTTP_CREATED, 'User Created');
     }
 
     public function storeArtist(Request $request) {
-
+        
         $rules = [
 
             'fullname' => 'required|unique:users,fullname,NULL,id,deleted_at,NULL|regex:/^[\pL\s\-]+$/u|max:150|min:5',
             'email' => 'required|email|unique:users,email,NULL,id,deleted_at,NULL',
+            'username' => 'required|unique:users,username,NULL,id,deleted_at,NULL',
             'password' => 'required|min:6',
             'confirm_password' => 'required|same:password',
             'number' => 'required|numeric:unique:users,number,NULL,id,deleted_at,NULL',
@@ -118,8 +125,14 @@ class UserController extends Controller
         if($validatorResponse !== true) {
             return $this->responseJson(false, HTTPResponse::HTTP_BAD_REQUEST, 'Error', $validatorResponse);
         }
+       
+        
+        $referral_code = $this->generateReferralCode();
 
-        $user = $this->artistUserRepository->save($request->all());
+        $data = $request->all();
+        $data['referral_code'] = $referral_code;
+
+        $user = $this->artistUserRepository->save($data);
 
         return $this->respondWithItem($user, $this->artistUserTransformer, true, HttpResponse::HTTP_CREATED, 'User Created');
 
@@ -169,6 +182,7 @@ class UserController extends Controller
             'fullname' => 'required||unique:users,fullname,'.$id.',id,deleted_at,NULL|regex:/^[\pL\s\-]+$/u|max:150|min:5',
             'designation' => 'alpha',
             'organisation' => 'alpha',
+            'username' => 'required|unique:users,username,NULL,id,deleted_at,NULL',
             'email' => 'required|email|unique:users,email,'.$id.',id,deleted_at,NULL',
             'password' => 'required|min:6',
             'number' => 'required|numeric:unique:users,number, '.$id.', id,deleted_at,NULL',
@@ -201,6 +215,7 @@ class UserController extends Controller
         $rules = [
 
             'fullname' => 'required|unique:users,fullname,'.$id.',id,deleted_at,NULL|regex:/^[\pL\s\-]+$/u|max:150|min:5',
+            'username' => 'required|unique:users,username,NULL,id,deleted_at,NULL',
             'email' => 'required|email|unique:users,email,NULL,'.$id.',deleted_at,NULL',
             'password' => 'min:6',
             'confirm_password' => 'same:password',
@@ -260,7 +275,7 @@ class UserController extends Controller
     {
 
         $rules = [
-            'email' => 'required|exists:users,email',
+            'username' => 'required|exists:users,username',
             'password' => 'required',
             // 'user_type' => 'required|in:artist,provider',
             'device_id' => 'required|max:200',
@@ -272,7 +287,7 @@ class UserController extends Controller
 
 
         $messages = [
-            'email.exists' => 'Incorrect Username or Password'
+            'username.exists' => 'Incorrect Username or Password'
         ];
 
         $validatorResponse = $this->validateRequest($request, $rules, $messages);
@@ -281,7 +296,7 @@ class UserController extends Controller
             return $this->responseJson(false, 400, 'Error', $validatorResponse);
         }
 
-        $email = $request->input('email');
+        $username = $request->input('username');
         $password = $request->input('password');
         // $user_type = $request->input('user_type');
         $device_id = $request->input('device_id');
@@ -290,7 +305,7 @@ class UserController extends Controller
         $os = $request->input('os');
         $app_version = $request->input('app_version');
 
-        $login = $this->userRepository->getUser(['email' => $email]);
+        $login = $this->userRepository->getUser(['username' => $username]);
 
         if(! $login) {
             return $this->responseJson(false, 400, 'Incorrect Username or Password');
@@ -299,9 +314,9 @@ class UserController extends Controller
         if($this->userRepository->isLoginCheck($password, $login->password)) {
 
             $attemptLogin = $this->proxy('password', [
-                'email'  =>  $email,
+                'username'  =>  $username,
                 'password'  =>  $password,
-                'provider' => 'users'
+                'providers' => 'users'
             ]);
             
             if(array_key_exists('error', $attemptLogin)) {
@@ -352,5 +367,20 @@ class UserController extends Controller
 
         $accessToken->revoke();
         return $this->responseJson(true, 200, 'Logout out Successfully');
+    }
+
+    function generateReferralCode() {
+        $str_result = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'; 
+        $length_of_string = 8;
+        
+        $code = substr(str_shuffle($str_result), 0, $length_of_string); 
+
+        $checkCode = $this->artistUserRepository->getUserByCode($code);
+
+        if($checkCode) {
+            $this->generateReferralCode();
+        }
+
+        return $code;
     }
 }

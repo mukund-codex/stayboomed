@@ -23,7 +23,9 @@ class UsersTable extends Migration
             $table->string('email')->unique();
             $table->string('user_type');
             $table->rememberToken();
+            $table->string('username')->unique();
             $table->string('password');
+            $table->string('referral_code')->unique();
             $table->date('dob')->nullable();
             $table->string('gender')->nullable();
             $table->string('number')->nullable();

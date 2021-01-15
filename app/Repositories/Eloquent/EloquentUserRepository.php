@@ -83,6 +83,7 @@ class EloquentUserRepository implements UserRepository
         $fullname = $data['fullname'];
         $designation = $data['designation'];
         $organisation = $data['organisation'];
+        $username = $data['username'];
         $email = $data['email'];
         $user_type = isset($data['user_type']) ? $data['user_type'] : 'provider';
         $password = $data['password'];
@@ -90,12 +91,14 @@ class EloquentUserRepository implements UserRepository
         $state_id = $data['state_id'];
         $city_id = $data['city_id'];
         $gender = $data['gender'];
+        $referral_code = $data['referral_code'];
             
         $c_data = [];
         $c_data['fullname'] = $fullname;
         $c_data['designation'] = $designation;
         $c_data['organisation'] = $organisation;
         $c_data['user_type'] = $user_type;
+        $c_data['username'] = $username;
         $c_data['email'] = $email;
 
         $c_data['password'] = Hash::make($password);
@@ -103,7 +106,8 @@ class EloquentUserRepository implements UserRepository
         $c_data['state_id'] = $state_id;
         $c_data['city_id'] = $city_id;
         $c_data['gender'] = $gender;
-
+        $c_data['referral_code'] = $referral_code;
+       
         $user = User::create($c_data);
 
         return $user;
@@ -119,6 +123,7 @@ class EloquentUserRepository implements UserRepository
         $fullname = $data['fullname'];
         $designation = $data['designation'];
         $organisation = $data['organisation'];
+        $username = $data['username'];
         $email = $data['email'];
         $user_type = 'provider';
         $password = $data['password'];
@@ -132,6 +137,7 @@ class EloquentUserRepository implements UserRepository
         $d_data['designation'] = $designation;
         $d_data['organisation'] = $organisation;
         $d_data['user_type'] = $user_type;
+        $d_data['username'] = $username;
         $d_data['email'] = $email;
         $d_data['password'] = Hash::make($password);
         $d_data['number'] = $number;

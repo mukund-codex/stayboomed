@@ -56,9 +56,15 @@ class EloquentArtistUserRepository implements ArtistUserRepository
         return ArtistUser::where('email', $email)->first();
     }
 
+    public function getUserByCode($code = [])
+    {
+        return ArtistUser::where('referral_code', $code)->first();
+    }
+
     public function save(array $data)
     {   
         $fullname = $data['fullname'];
+        $username = $data['username'];
         $email = $data['email'];
         $user_type = 'artist';
         $password = $data['password'];
@@ -69,10 +75,12 @@ class EloquentArtistUserRepository implements ArtistUserRepository
         $dob = $data['dob']; 
         $gender = $data['gender'];
         $address = $data['address'];
+        $referral_code = $data['referral_code'];
             
         $c_data = [];
         $c_data['fullname'] = $fullname;
         $c_data['user_type'] = $user_type;
+        $c_data['username'] = $username;
         $c_data['email'] = $email;
         $c_data['password'] = Hash::make($password);
         $c_data['number'] = $number;
@@ -82,6 +90,7 @@ class EloquentArtistUserRepository implements ArtistUserRepository
         $c_data['dob'] = $dob;
         $c_data['gender'] = $gender;
         $c_data['address'] = $address;
+        $c_data['referral_code'] = $referral_code;
         
         $user = ArtistUser::create($c_data);
 
@@ -96,31 +105,26 @@ class EloquentArtistUserRepository implements ArtistUserRepository
     {
 
         $fullname = $data['fullname'];
-        $designation = isset($data['designation']) ? $data['designation'] : '';
-        $organisation = isset($data['organisation']) ? $data['organisation'] : '';
+        $username = $data['username'];
         $email = $data['email'];
-        $user_type = isset($data['user_type']) ? $data['user_type'] : 'provider';
+        $user_type = 'artist';
         $password = $data['password'];
         $number = $data['number'];
         $state_id = $data['state_id'];
         $city_id = $data['city_id'];
-        $profession_id = isset($data['profession_id']) ? $data['profession_id'] : '';
-        $dob = isset($data['dob']) ? $data['dob'] : ''; 
+        $profession_id = $data['profession_id'];
+        $dob = $data['dob']; 
         $gender = $data['gender'];
-        $address = isset($data['address']) ? $data['address'] : '';
+        $address = $data['address'];
             
         $d_data = [];
         $d_data['fullname'] = $fullname;
 
-        if(isset($designation)) {
-            $d_data['designation'] = $designation;
-        }
-
-        if(isset($organisation)) {
-            $d_data['organisation'] = $organisation;
-        }
+        $d_data['designation'] = $designation;
+        $d_data['organisation'] = $organisation;
 
         $d_data['user_type'] = $user_type;
+        $d_data['username'] = $username;
         $d_data['email'] = $email;
 
         $d_data['password'] = Hash::make($password);
@@ -128,19 +132,11 @@ class EloquentArtistUserRepository implements ArtistUserRepository
         $d_data['state_id'] = $state_id;
         $d_data['city_id'] = $city_id;
 
-        if(!empty($profession_id)) {
-            $d_data['profession_id'] = $profession_id; 
-        }
-        
-        if(!empty($dob)) {
-            $d_data['dob'] = $dob;
-        }
+        $d_data['profession_id'] = $profession_id; 
+        $d_data['dob'] = $dob;
 
         $d_data['gender'] = $gender;
-
-        if(isset($address)) {
-            $d_data['address'] = $address;
-        }
+        $d_data['address'] = $address;
 
         $user = ArtistUser::where('id', $id)->update($d_data);  
 

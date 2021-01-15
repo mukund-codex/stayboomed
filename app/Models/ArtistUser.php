@@ -27,7 +27,7 @@ class ArtistUser extends Model implements AuthenticatableContract, AuthorizableC
      * @var array
      */
     protected $fillable = [
-        'fullname', 'designation', 'organisation', 'email', 'user_type', 'password', 'number', 'state_id', 'city_id', 'gender', 'profession_id', 'dob' , 'address'
+        'fullname', 'designation', 'organisation', 'username', 'email', 'user_type', 'password', 'number', 'state_id', 'city_id', 'gender', 'profession_id', 'dob' , 'address', 'referral_code'
     ];
 
     /**

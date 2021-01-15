@@ -38,22 +38,24 @@ $router->group(
                 ['prefix' => 'user', 'namespace' => 'Master'], 
                 function() use ($router) {
                     $router->get('', ['uses' => 'UserController@index']);
-                    $router->post('/create', 'UserController@register');
+                    $router->post('/create', 'UserController@store');
+                    $router->post('/create_artist/', 'UserController@storeArtist');
                     $router->post('/login', ['uses' => 'UserController@login']);
                     $router->post('/logout', ['middleware' => ['auth:users'], 'uses' => 'UserController@logout']);
                     $router->post('/refresh', 'UserController@refresh');
                     $router->get('/roles', ['middleware' => ['auth:users'], 'uses' => 'UserController@roles']);
                     $router->put('/update/{id:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}}', ['uses' => 'UserController@update']);
-                    $router->post('/import', ['middleware' => ['auth:admin'], 'uses' => 'UserController@upload']);
+                    $router->put('/update_artist/{id:[0-9]}', 'UserController@updateArtist');
+                    $router->post('/import', ['middleware' => ['auth:users'], 'uses' => 'UserController@upload']);
                     $router->post('/profile', ['middleware' => ['auth:users'], 'uses' => 'UserController@profile']);
                     $router->post('/editprofile', ['middleware' => ['auth:users'], 'uses' => 'UserController@editprofile']);
                     $router->post('/resetpassword', ['middleware' => ['auth:users'], 'uses' => 'UserController@resetpassword']);
-                    $router->get('/download', ['middleware' => ['auth:admin'], 'uses' => 'UserController@download']);
+                    $router->get('/download', ['middleware' => ['auth:users'], 'uses' => 'UserController@download']);
                     /*, 'permission:export-user'*/
-                    $router->delete('/delete/{id:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}}', ['middleware' => ['auth:admin'], 'uses' => 'UserController@destroy']);
-                    $router->post('/delete_all', ['middleware' => ['auth:admin'], 'uses' => 'UserController@destroy_all']);
+                    $router->delete('/delete/{id:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}}', ['middleware' => ['auth:users'], 'uses' => 'UserController@destroy']);
+                    $router->post('/delete_all', ['middleware' => ['auth:users'], 'uses' => 'UserController@destroy_all']);
                     $router->post('/feedback', ['middleware' => ['auth:users'], 'uses' => 'UserController@feedback']); //, 'permission:user-feedback'
-                    $router->get('/feedback_list', ['middleware' => ['auth:admin', 'permission:feedback-list'], 'uses' => 'UserController@feedback_list']);
+                    $router->get('/feedback_list', ['middleware' => ['auth:users', 'permission:feedback-list'], 'uses' => 'UserController@feedback_list']);
             });
 
             $router->group(['prefix' => 'state', 'namespace' => 'Master'], 
@@ -86,17 +88,17 @@ $router->group(
                 
             });
 
-            $router->group(['prefix' => 'user', 'namespace' => 'Master'], 
-            function() use ($router) {
-                $router->get('', ['uses' => 'UserController@index']);
-                $router->get('/show/{id:[0-9]}', ['uses' => 'UserController@show']);
-                $router->post('/create', 'UserController@store');
-                $router->post('/create_artist/', 'UserController@storeArtist');
-                $router->put('/update/{id:[0-9]}', 'UserController@update');
-                $router->put('/update_artist/{id:[0-9]}', 'UserController@updateArtist');
-                $router->delete('/delete/{id:[0-9]}', ['uses' => 'UserController@destroy']);
+            // $router->group(['prefix' => 'user', 'namespace' => 'Master'], 
+            // function() use ($router) {
+            //     $router->get('', ['uses' => 'UserController@index']);
+            //     $router->get('/show/{id:[0-9]}', ['uses' => 'UserController@show']);
+            //     $router->post('/create', 'UserController@store');
+            //     $router->post('/create_artist/', 'UserController@storeArtist');
+            //     $router->put('/update/{id:[0-9]}', 'UserController@update');
+            //     $router->put('/update_artist/{id:[0-9]}', 'UserController@updateArtist');
+            //     $router->delete('/delete/{id:[0-9]}', ['uses' => 'UserController@destroy']);
                 
-            });
+            // });
 
             $router->group(['prefix' => 'provider_details', 'namespace' => 'Master'], 
             function() use ($router) {

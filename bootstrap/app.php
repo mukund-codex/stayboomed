@@ -78,6 +78,10 @@ $app->middleware([
     // \App\Http\Middleware\TransformsRequest::class,
     // \App\Http\Middleware\TrimStrings::class,
     // \App\Http\Middleware\ConvertEmptyStringsToNull::class,
+    // \Barryvdh\Cors\HandleCors::class,
+    // \App\Http\Middleware\TransformsRequest::class,
+    // \App\Http\Middleware\TrimStrings::class,
+    // \App\Http\Middleware\ConvertEmptyStringsToNull::class,
 ]);
 
 $app->routeMiddleware([
@@ -107,24 +111,6 @@ $app->routeMiddleware([
 
 $app->configure('app');
 
-/*
-|--------------------------------------------------------------------------
-| Register Middleware
-|--------------------------------------------------------------------------
-|
-| Next, we will register the middleware with the application. These can
-| be global middleware that run before and after each request into a
-| route or middleware that'll be assigned to some specific routes.
-|
-*/
-
-// $app->middleware([
-//     App\Http\Middleware\ExampleMiddleware::class
-// ]);
-
-$app->routeMiddleware([
-    'auth' => App\Http\Middleware\Authenticate::class,
-]);
 
 /*
 |--------------------------------------------------------------------------
@@ -162,5 +148,12 @@ $app->router->group([
 ], function ($router) {
     require __DIR__.'/../routes/web.php';
 });
+
+$app->configure('auth');
+$app->configure('filesystems');
+$app->configure('permission');
+$app->configure('database');
+$app->configure('queue');
+$app->configure('apidoc');
 
 return $app;

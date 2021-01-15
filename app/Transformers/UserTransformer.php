@@ -15,12 +15,14 @@ class UserTransformer extends TransformerAbstract
             'designation'  =>  $user->designation,
             'organisation'  =>  $user->organisation,
             'user_type'  =>  $user->user_type,
+            'username' => $user->username,
             'email'  =>  $user->email,
             'number' => $user->number,
             'gender' => $user->gender,
             'address' =>  $user->address,
             'state_id'  =>  $user->state_id,   
             'city_id'  =>  $user->city_id, 
+            'referral_code' => $user->referral_code
      ];
 
     }
