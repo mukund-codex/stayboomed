@@ -312,7 +312,7 @@ class UserController extends Controller
         }
 
         if($this->userRepository->isLoginCheck($password, $login->password)) {
-
+           
             $attemptLogin = $this->proxy('password', [
                 'username'  =>  $username,
                 'password'  =>  $password,

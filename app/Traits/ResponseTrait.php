@@ -77,19 +77,19 @@ trait ResponseTrait
             'grant_type'    => $grantType,
             'scope'         => ''
         ]);
-          
-        $client = new \GuzzleHttp\Client();      
         
+        $client = new \GuzzleHttp\Client();      
         try {
             $result = $client->request('POST', url('oauth/token'), [
                 'form_params' => $data,
                 'http_errors' => false
             ]);   
+            
         
         } catch (ClientException | RequestException | Exception $e) {
             throw new Exception("{$e->getMessage()}");
         }
-
+        
         $data = json_decode((string) $result->getBody(), true);
         return $data;
     }
