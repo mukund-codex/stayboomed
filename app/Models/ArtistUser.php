@@ -10,10 +10,11 @@ use Illuminate\Database\Eloquent\Model;
 use Laravel\Lumen\Auth\Authorizable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Traits\UuidTrait;
+use Laravel\Passport\HasApiTokens;
 
 class ArtistUser extends Model implements AuthenticatableContract, AuthorizableContract
 {
-    use Authenticatable, Authorizable, HasFactory, SoftDeletes;  
+    use HasApiTokens, Authenticatable, Authorizable, HasFactory, SoftDeletes;  
 
     public $incrementing = 'true';
 
@@ -27,7 +28,7 @@ class ArtistUser extends Model implements AuthenticatableContract, AuthorizableC
      * @var array
      */
     protected $fillable = [
-        'fullname', 'designation', 'organisation', 'username', 'email', 'user_type', 'password', 'number', 'state_id', 'city_id', 'gender', 'profession_id', 'dob' , 'address', 'referral_code'
+        'fullname', 'designation', 'username', 'email', 'user_type', 'password', 'number', 'state_id', 'city_id', 'gender', 'profession_id', 'dob' , 'address', 'referral_code'
     ];
 
     /**
@@ -62,5 +63,9 @@ class ArtistUser extends Model implements AuthenticatableContract, AuthorizableC
 
     public function providerDetails() {
         return $this->hasOne(ProviderDetails::class);
+    }
+
+    public function artistProfession() {
+        return $this->hasMany(ArtistProfession::class);
     }
 }

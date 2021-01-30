@@ -13,6 +13,8 @@ use App\Helpers\Common;
 use League\Fractal;
 use Illuminate\Validation\Rule;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Hash;
+use Validator;
 
 class UserController extends Controller
 {
@@ -40,7 +42,7 @@ class UserController extends Controller
             }
         }
 
-        $data = $this->userRespository->filtered(
+        $data = $this->userRepository->filtered(
             $this->recursive_change_key(
             $this->filteredRequestParams($request, ['id','fullname', 'email', 'number', 'number', 'age', 'user_type']),
             ["id" => "users.id", "fullname"=>"users.fullname", 'email' => 'users.email', 'number' => 'users.number', 'age' => 'users.age', 'user_type' => 'users.user_type']
@@ -102,7 +104,7 @@ class UserController extends Controller
     }
 
     public function storeArtist(Request $request) {
-        
+       
         $rules = [
 
             'fullname' => 'required|unique:users,fullname,NULL,id,deleted_at,NULL|regex:/^[\pL\s\-]+$/u|max:150|min:5',
@@ -113,7 +115,8 @@ class UserController extends Controller
             'number' => 'required|numeric:unique:users,number,NULL,id,deleted_at,NULL',
             'state_id' => 'required|exists:state_master,id',
             'city_id' => 'required|exists:city_master,id',
-            'profession_id' => 'required|exists:profession_master,id',
+            'profession' => 'required|array',
+            'profession.*.profession_id' => 'required|exists:profession_master,id',
             'dob' => 'required|date',
             'gender' => 'required|in:male,female,other',
             'address' => 'required'
@@ -273,80 +276,181 @@ class UserController extends Controller
 
     public function login(Request $request)
     {
-
-        $rules = [
+        $input = $request->all();
+        
+        $validator = Validator::make($input, [
             'username' => 'required|exists:users,username',
-            'password' => 'required',
-            // 'user_type' => 'required|in:artist,provider',
-            'device_id' => 'required|max:200',
-            'device_type' => 'required|in:android,ios',
-            'device_name' => 'required|max:150',
-            'os' => 'regex:/^[a-zA-Z0-9 _-]*$/',
-            'app_version' => 'required|max:10'
-        ];
+            'password' => 'required'
+        ]);
 
+        if ($validator->fails()) 
+        {
+            return response()->json([
+                'status' => 500,
+                'message' => 'Bad Request',
+                'error' => $validator->errors()
 
-        $messages = [
-            'username.exists' => 'Incorrect Username or Password'
-        ];
-
-        $validatorResponse = $this->validateRequest($request, $rules, $messages);
-
-        if ($validatorResponse !== true) {
-            return $this->responseJson(false, 400, 'Error', $validatorResponse);
+            ], 401);    
         }
 
-        $username = $request->input('username');
-        $password = $request->input('password');
-        // $user_type = $request->input('user_type');
-        $device_id = $request->input('device_id');
-        $device_name = $request->input('device_name');
-        $device_type = $request->input('device_type');
-        $os = $request->input('os');
-        $app_version = $request->input('app_version');
+        $check_users = User::where('username', '=', $input['username'])->first();
+        
+        if (@count($check_users) > 0) 
+        {
+            $password = $input['password'];
+        
+            if(Hash::check($password, $check_users['password']))
+            {   
+                unset($check_users['password']);
+                $data = $check_users;
+                $data['access_token'] = $check_users->createToken('users')->accessToken;
+                // $response['token'] = $check_users->createToken('users')->accessToken;
+                $response['data'] = $data;
+                $response['status'] = 200;
+                $response['message'] = 'Login Successfull';
 
-        $login = $this->userRepository->getUser(['username' => $username]);
-
-        if(! $login) {
-            return $this->responseJson(false, 400, 'Incorrect Username or Password');
-        }
-
-        if($this->userRepository->isLoginCheck($password, $login->password)) {
-           
-            $attemptLogin = $this->proxy('password', [
-                'username'  =>  $username,
-                'password'  =>  $password,
-                'providers' => 'users'
-            ]);
-            
-            if(array_key_exists('error', $attemptLogin)) {
-                return $this->responseJson(false, 401, 'Error', $attemptLogin, []);
+                return response()->json($response, 200);
+            }else
+            {
+                $response['status'] = 401;
+                $response['message'] = 'Password is Incorrect';
+    
+                return response()->json($response, 401);
             }
+        }else
+        {
+            $response['status'] = 401;
+            $response['message'] = 'Username is Incorrect';
 
-
-            $login_count = count(\App\Models\User::find($login->id)->deviceInfo()->get());
-
-            if($device_id) {
-                $device_info = [];
-                $device_info['user_id'] = $login->id;
-                $device_info['device_id'] = $device_id;
-                $device_info['device_info'] = [
-                    'device_name' => $device_name,
-                    'device_type' => $device_type,
-                    'os' => $os,
-                    'app_version' => $app_version
-                ];
-
-                $deviceData = \App\Models\DeviceInfo::create($device_info);
-            }
-
-        $v = VersionControl::where('is_active',true)->select('android_version','ios_version')->first();
-            $attemptLogin = array_merge($v->toArray(),$attemptLogin, ['campaign_code' => $campaign_code,'login_count'=>$login_count], $login->toArray());
-            return $this->responseJson(true, 200, 'Login Successfull', [], $attemptLogin);
+            return response()->json($response, 401);
         }
-
-        return $this->responseJson(false, 400, 'Incorrect Username or Password', []);
     }
+
+    public function artistLogin(Request $request) {
+
+        $input = $request->all();
+        
+        $validator = Validator::make($input, [
+            'username' => 'required|exists:users,username',
+            'password' => 'required'
+        ]);
+
+        if ($validator->fails()) 
+        {
+            return response()->json([
+                'status' => 500,
+                'message' => 'Bad Request',
+                'error' => $validator->errors()
+
+            ], 401);    
+        }
+
+        $check_users = ArtistUser::where('username', '=', $input['username'])->first();
+        
+        if (@count($check_users) > 0) 
+        {
+            $password = $input['password'];
+        
+            if(Hash::check($password, $check_users['password']))
+            {   
+                unset($check_users['password']);
+                $data = $check_users;
+                $data['access_token'] = $check_users->createToken('users')->accessToken;
+                // $response['token'] = $check_users->createToken('users')->accessToken;
+                $response['data'] = $data;
+                $response['status'] = 200;
+                $response['message'] = 'Login Successfull';
+
+                return response()->json($response, 200);
+            }else
+            {
+                $response['status'] = 401;
+                $response['message'] = 'Password is Incorrect';
+    
+                return response()->json($response, 401);
+            }
+        }else
+        {
+            $response['status'] = 401;
+            $response['message'] = 'Username is Incorrect';
+
+            return response()->json($response, 401);
+        }
+
+    }
+
+    // public function artistLogin(Request $request)
+    // {
+    //     $rules = [
+    //         'username' => 'required|exists:users,username',
+    //         'password' => 'required',
+    //         'user_type' => 'required|in:artist',
+    //         'device_id' => 'required|max:200',
+    //         'device_type' => 'required|in:android,ios',
+    //         'device_name' => 'required|max:150',
+    //         'os' => 'regex:/^[a-zA-Z0-9 _-]*$/',
+    //         'app_version' => 'required|max:10'
+    //     ];
+
+    //     $messages = [
+    //         'username.exists' => 'Incorrect Username or Password'
+    //     ];
+
+    //     $validatorResponse = $this->validateRequest($request, $rules, $messages);
+
+    //     if ($validatorResponse !== true) {
+    //         return $this->responseJson(false, 400, 'Error', $validatorResponse);
+    //     }
+       
+    //     $username = $request->input('username');
+    //     $password = $request->input('password');
+    //     // $user_type = $request->input('user_type');
+    //     $device_id = $request->input('device_id');
+    //     $device_name = $request->input('device_name');
+    //     $device_type = $request->input('device_type');
+    //     $os = $request->input('os');
+    //     $app_version = $request->input('app_version');
+
+    //     $login = $this->artistUserRepository->getUser(['username' => $username]);
+
+    //     if( empty($login)) {
+    //         return $this->responseJson(false, 400, 'Incorrect Username or Password');
+    //     }
+
+    //     if($this->artistUserRepository->isLoginCheck($password, $login->password)) {
+           
+    //         $attemptLogin = $this->proxy('password', [
+    //             'username'  =>  $username,
+    //             'password'  =>  $password,
+    //             'providers' => 'users'
+    //         ]);
+           
+    //         if(array_key_exists('error', $attemptLogin)) {
+    //             return $this->responseJson(false, 401, 'Error', $attemptLogin, []);
+    //         }
+    //         $login_count = count(\App\Models\ArtistUser::find($login->id)->deviceInfo()->get());
+
+    //         if($device_id) {
+    //             $device_info = [];
+    //             $device_info['user_id'] = $login->id;
+    //             $device_info['device_id'] = $device_id;
+    //             $device_info['device_info'] = [
+    //                 'device_name' => $device_name,
+    //                 'device_type' => $device_type,
+    //                 'os' => $os,
+    //                 'app_version' => $app_version
+    //             ];
+
+    //             $deviceData = \App\Models\DeviceInfo::create($device_info);
+    //         }
+
+    //         $v = VersionControl::where('is_active',true)->select('android_version','ios_version')->first();
+    //         $attemptLogin = array_merge($v->toArray(),$attemptLogin, ['login_count'=>$login_count], $login->toArray());
+    //         return $this->responseJson(true, 200, 'Login Successfull', [], $attemptLogin);
+    //     }
+
+    //     return $this->responseJson(false, 400, 'Incorrect Username or Password', []);
+    // }
 
     /**
     * @group App

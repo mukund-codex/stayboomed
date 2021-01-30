@@ -59,6 +59,7 @@ class EloquentUserRepository implements UserRepository
     public function getUser(array $data)
     {
         // DB::enableQueryLog();
+        $data['user_type'] = 'provider';
         return User::select('users.id','users.fullname','users.email','users.number','users.gender','users.state_id', 'users.password')->where($data)->first();
         
         //  $query = DB::getQueryLog(); 
@@ -109,6 +110,8 @@ class EloquentUserRepository implements UserRepository
         $c_data['referral_code'] = $referral_code;
        
         $user = User::create($c_data);
+
+        $user['accessToken'] = $user->createToken('users')->accessToken;
 
         return $user;
     }

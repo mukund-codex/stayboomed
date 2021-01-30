@@ -76,4 +76,8 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     public function appliedJobs() {
         return $this->hasMany(AppliedJobs::class);
     }
+
+    // public function deviceInfo() {
+    //     return $this->hasMany(DeviceInfo::class);
+    // }
 }

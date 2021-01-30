@@ -18,12 +18,13 @@ class ArtistUserTransformer extends TransformerAbstract
             'number' => $user->number,
             'gender' => $user->gender,
             'address' =>  $user->address,
-            'state_id'  =>  $user->state_id,   
-            'city_id'  =>  $user->city_id, 
-            'profession_id' => $user->profession_id,
+            'state'  =>  $user->state,   
+            'city'  =>  $user->city, 
+            'profession' => $user->artistProfession,
             'dob' => $user->dob,
             'address' => $user->address,
-            'referral_code' => $user->referral_code
+            'referral_code' => $user->referral_code,
+            'access_token' => $user->accessToken
      ];
 
     }

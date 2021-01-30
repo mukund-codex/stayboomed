@@ -20,9 +20,10 @@ class UserTransformer extends TransformerAbstract
             'number' => $user->number,
             'gender' => $user->gender,
             'address' =>  $user->address,
-            'state_id'  =>  $user->state_id,   
-            'city_id'  =>  $user->city_id, 
-            'referral_code' => $user->referral_code
+            'state'  =>  $user->state,   
+            'city'  =>  $user->city, 
+            'referral_code' => $user->referral_code,
+            'access_token' => $user->accessToken
      ];
 
     }
