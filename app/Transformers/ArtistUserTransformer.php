@@ -20,7 +20,7 @@ class ArtistUserTransformer extends TransformerAbstract
             'address' =>  $user->address,
             'state'  =>  $user->state,   
             'city'  =>  $user->city, 
-            'profession' => $user->artistProfession,
+            'profession' => json_decode($user->professions),
             'dob' => $user->dob,
             'address' => $user->address,
             'referral_code' => $user->referral_code,

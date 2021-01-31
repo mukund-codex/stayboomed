@@ -94,7 +94,7 @@ class EloquentArtistUserRepository implements ArtistUserRepository
         $number = $data['number'];
         $state_id = $data['state_id'];
         $city_id = $data['city_id'];
-        $profession[] = $data['profession'];
+        $profession = json_encode($data['profession']);
         $dob = $data['dob']; 
         $gender = $data['gender'];
         $address = $data['address'];
@@ -109,26 +109,13 @@ class EloquentArtistUserRepository implements ArtistUserRepository
         $c_data['number'] = $number;
         $c_data['state_id'] = $state_id;
         $c_data['city_id'] = $city_id;
-        // $c_data['profession_id'] = $profession_id; 
+        $c_data['professions'] = $profession; 
         $c_data['dob'] = $dob;
         $c_data['gender'] = $gender;
         $c_data['address'] = $address;
         $c_data['referral_code'] = $referral_code;
         
         $user = ArtistUser::create($c_data);
-       
-        $i = 0;
-        foreach ($profession as $data) {
-            
-            $a_data = [];
-            $user_id = $user['id'];
-            $profession_id = $data[$i]['profession_id'];
-            ArtistProfession::create(["user_id" => $user_id, "profession_id" => $profession_id]);
-            
-            $i++;
-            // $artistData = ArtistProfession::insert($a_data);
-        }
-        
         
         $user['accessToken'] = $user->createToken('users')->accessToken;
 

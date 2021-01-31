@@ -28,7 +28,7 @@ class ArtistUser extends Model implements AuthenticatableContract, AuthorizableC
      * @var array
      */
     protected $fillable = [
-        'fullname', 'designation', 'username', 'email', 'user_type', 'password', 'number', 'state_id', 'city_id', 'gender', 'profession_id', 'dob' , 'address', 'referral_code'
+        'fullname', 'designation', 'username', 'email', 'user_type', 'password', 'number', 'state_id', 'city_id', 'gender', 'profession_id', 'dob' , 'address', 'referral_code', 'professions'
     ];
 
     /**
@@ -65,7 +65,4 @@ class ArtistUser extends Model implements AuthenticatableContract, AuthorizableC
         return $this->hasOne(ProviderDetails::class);
     }
 
-    public function artistProfession() {
-        return $this->hasMany(ArtistProfession::class);
-    }
 }

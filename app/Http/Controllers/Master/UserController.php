@@ -104,7 +104,7 @@ class UserController extends Controller
     }
 
     public function storeArtist(Request $request) {
-       
+        
         $rules = [
 
             'fullname' => 'required|unique:users,fullname,NULL,id,deleted_at,NULL|regex:/^[\pL\s\-]+$/u|max:150|min:5',
@@ -129,9 +129,8 @@ class UserController extends Controller
             return $this->responseJson(false, HTTPResponse::HTTP_BAD_REQUEST, 'Error', $validatorResponse);
         }
        
-        
         $referral_code = $this->generateReferralCode();
-
+        
         $data = $request->all();
         $data['referral_code'] = $referral_code;
 

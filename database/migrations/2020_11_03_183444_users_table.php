@@ -32,6 +32,7 @@ class UsersTable extends Migration
             $table->string('address')->nullable();
             $table->foreignId('state_id')->nullable();
             $table->foreignId('city_id')->nullable();
+            $table->jsonb('professions')->nullable();
             $table->timestamps();
             $table->softDeletes();
 

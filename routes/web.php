@@ -58,7 +58,7 @@ $router->group(
                     $router->get('/feedback_list', ['middleware' => ['auth:users', 'permission:feedback-list'], 'uses' => 'UserController@feedback_list']);
             });
 
-            $router->group(['prefix' => 'state', 'middleware' => ['auth:users'], 'namespace' => 'Master'], 
+            $router->group(['prefix' => 'state', 'namespace' => 'Master'], //'middleware' => ['auth:users'], 
             function() use ($router) {
                 $router->get('', ['uses' => 'StateController@index']);
                 $router->get('/show/{id:[0-9]}', ['uses' => 'StateController@show']);
@@ -68,7 +68,7 @@ $router->group(
                 
             });
 
-            $router->group(['prefix' => 'city', 'middleware' => ['auth:users'], 'namespace' => 'Master'], 
+            $router->group(['prefix' => 'city', 'namespace' => 'Master'], ///'middleware' => ['auth:users'], 
             function() use ($router) {
                 $router->get('', ['uses' => 'CityController@index']);
                 $router->get('/show/{id:[0-9]}', ['uses' => 'CityController@show']);
@@ -78,7 +78,7 @@ $router->group(
                 
             });
 
-            $router->group(['prefix' => 'profession', 'middleware' => ['auth:users'], 'namespace' => 'Master'],  //, 'middleware' => ['auth:user']
+            $router->group(['prefix' => 'profession', 'namespace' => 'Master'],  //, , 'middleware' => ['auth:users']
             function() use ($router) {
                 $router->get('', ['uses' => 'ProfessionController@index']);
                 $router->get('/show/{id:[0-9]}', ['uses' => 'ProfessionController@show']);
