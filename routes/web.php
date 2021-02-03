@@ -130,13 +130,23 @@ $router->group(
                 
             });
 
-            $router->group(['prefix' => 'artist_details', 'middleware' => ['auth:users'], 'namespace' => 'Master'], 
+            $router->group(['prefix' => 'artist_details', 'namespace' => 'Master'], //, 'middleware' => ['auth:users']
             function() use ($router) {
                 $router->get('', ['uses' => 'ArtistDetailsController@index']);
                 $router->get('/show/{id:[0-9]}', ['uses' => 'ArtistDetailsController@show']);
                 $router->post('/create', 'ArtistDetailsController@store');
                 $router->put('/update/{id:[0-9]}', 'ArtistDetailsController@update');
                 $router->delete('/delete/{id:[0-9]}', ['uses' => 'ArtistDetailsController@destroy']);
+                
+            });
+
+            $router->group(['prefix' => 'artist_porfolio', 'namespace' => 'Master'], //, 'middleware' => ['auth:users']
+            function() use ($router) {
+                $router->get('', ['uses' => 'ArtistPorfolioController@index']);
+                $router->get('/show/{id:[0-9]}', ['uses' => 'ArtistPorfolioController@show']);
+                $router->post('/create', 'ArtistPorfolioController@store');
+                $router->put('/update/{id:[0-9]}', 'ArtistPorfolioController@update');
+                $router->delete('/delete/{id:[0-9]}', ['uses' => 'ArtistPorfolioController@destroy']);
                 
             });
 

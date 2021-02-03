@@ -4,23 +4,24 @@ namespace App\Http\Controllers\Master;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\ArtistDetails;
+use App\Models\ArtistPorfolio;
 use Symfony\Component\HttpFoundation\Response as HttpResponse;
-use App\Repositories\Contracts\ArtistDetailsRepository;
-use App\Transformers\ArtistDetailsTransformer;
+use App\Repositories\Contracts\ArtistPorfolioRepository;
+use App\Transformers\ArtistPorfolioTransformer;
 use Ramsey\Uuid\Uuid;
 use App\Helpers\Common;
 use League\Fractal;
 use Illuminate\Validation\Rule;
 use Carbon\Carbon;
 
-class ArtistDetailsController extends Controller
-{
-    public function __construct(ArtistDetailsRepository $artistDetailsRespository, ArtistDetailsTransformer $artistDetailsTransformer)
+class ArtistPorfolioController extends Controller
+{   
+
+    public function __construct(ArtistPorfolioRepository $artistPorfolioRespository, ArtistPorfolioTransformer $artistPorfolioTransformer)
     {
         
-        $this->artistDetailsRespository = $artistDetailsRespository;
-        $this->artistDetailsTransformer = $artistDetailsTransformer;
+        $this->artistPorfolioRespository = $artistPorfolioRespository;
+        $this->artistPorfolioTransformer = $artistPorfolioTransformer;
         
     }
 
@@ -29,7 +30,7 @@ class ArtistDetailsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
         //
         if (\array_key_exists('id', $request->all())) {
@@ -38,16 +39,16 @@ class ArtistDetailsController extends Controller
             }
         }
 
-        $data = $this->artistDetailsRespository->filtered(
+        $data = $this->artistPorfolioRespository->filtered(
             $this->recursive_change_key(
             $this->filteredRequestParams($request, ['id','user_id']),
-            ["id" => "artist_details.id", "user_id"=>"artist_details.user_id"]
-            ),[ "artist_details.id" => "=", "artist_details.user_id" => "="]
+            ["id" => "artist_porfolio.id", "user_id"=>"artist_porfolio.user_id"]
+            ),[ "artist_porfolio.id" => "=", "artist_porfolio.user_id" => "="]
             )->paginate();
 
         $uploadParameters['fields'] = ['User name', 'jon name'];
 
-        return $this->respondWithCollection($data, $this->artistDetailsTransformer, true, HttpResponse::HTTP_OK, 'Subscription List', $uploadParameters);
+        return $this->respondWithCollection($data, $this->artistPorfolioTransformer, true, HttpResponse::HTTP_OK, 'Subscription List', $uploadParameters);
     }
 
     /**
@@ -71,12 +72,12 @@ class ArtistDetailsController extends Controller
         //
         $rules = [
             'user_id' => 'required|exists:users,id',
-            'country' => 'required|alpha',
-            'zip_code' => 'required|numeric',
-            'corresponding_address' => 'required',
-            'permanent_address' => 'required',
-            'profile_picture' => 'image|mimes:jpeg,jpg,png|max:5000',
-            'cover_picture' => 'image|mimes:jpeg,jpg,png|max:5000'
+            'audio_title' => '',
+            'audio_file' => 'mimes:mp3,wav',
+            'video_title' => '',
+            'video_file' => 'mimes:mp4,avi,mov,flv,avg',
+            'picture_title' => '',
+            'picture_file' => 'image|mimes:jpeg,jpg,png|max:5000'
         ];
 
         $validatorResponse = $this->validateRequest($request, $rules);
@@ -85,9 +86,9 @@ class ArtistDetailsController extends Controller
             return $this->responseJson(false, HttpResponse::HTTP_BAD_REQUEST, 'Error', $validatorResponse);
         }
 
-        $details = $this->artistDetailsRespository->save($request->all()); 
+        $details = $this->artistPorfolioRespository->save($request->all()); 
         
-        return $this->respondWithItem($details, $this->artistDetailsTransformer, true, HttpResponse::HTTP_CREATED, 'Artist Details Created');
+        return $this->respondWithItem($details, $this->artistPorfolioTransformer, true, HttpResponse::HTTP_CREATED, 'Artist Details Created');
     }
 
     /**

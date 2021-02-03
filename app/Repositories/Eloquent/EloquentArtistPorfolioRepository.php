@@ -3,21 +3,21 @@
 namespace App\Repositories\Eloquent;
 
 
-use App\Repositories\Contracts\ArtistDetailsRepository;
+use App\Repositories\Contracts\ArtistPorfolioRepository;
 use Illuminate\Http\Response;
 use App\Traits\S3ForMedia;
 use DB;
-use App\Models\ArtistDetails; 
+use App\Models\ArtistPorfolio; 
 use Illuminate\Support\Str;
 use Carbon\Carbon;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
-use App\Exports\{ArtistDetailsExport};
-use App\Imports\ArtistDetailsImport;
+use App\Exports\{ArtistPorfolioExport};
+use App\Imports\ArtistPorfolioImport;
 use Illuminate\Support\Collection;
 
-class EloquentArtistDetailsRepository implements ArtistDetailsRepository
+class EloquentArtistPorfolioRepository implements ArtistPorfolioRepository
 {
     use S3ForMedia;
 /**
@@ -25,7 +25,7 @@ class EloquentArtistDetailsRepository implements ArtistDetailsRepository
     */
     public function find($id)
     {
-        return ArtistDetails::find($id);
+        return ArtistPorfolio::find($id);
     }
 
     /**
@@ -33,7 +33,7 @@ class EloquentArtistDetailsRepository implements ArtistDetailsRepository
     */
     public function findOneBy(array $data)
     {
-        return ArtistDetails::where($data)->first();
+        return ArtistPorfolio::where($data)->first();
     }
     
     /**
@@ -41,7 +41,7 @@ class EloquentArtistDetailsRepository implements ArtistDetailsRepository
     */
     public function findIn($key, $value)
     {
-        return ArtistDetails::where($key, $value)->first();
+        return ArtistPorfolio::where($key, $value)->first();
     }
     
     /**
@@ -59,63 +59,58 @@ class EloquentArtistDetailsRepository implements ArtistDetailsRepository
     public function save(array $data)
     {  
         $user_id = $data['user_id'];   
-        $country = $data['country'];
-        $zip_code = $data['zip_code'];
-        $corresponding_address = $data['corresponding_address'];
-        $permanent_address = $data['permanent_address'];
+        $audio_title = $data['audio_title'];
+        $video_title = $data['video_title'];
+        $picture_title = $data['picture_title'];
 
         $c_data = [];
         $c_data['user_id'] = $user_id;
-        $c_data['country'] = $country;
-        $c_data['zip_code'] = $zip_code;
-        $c_data['corresponding_address'] = $corresponding_address;
-        $c_data['permanent_address'] = $permanent_address;
+        $c_data['audio_title'] = $audio_title;
+        $c_data['video_title'] = $video_title;
+        $c_data['picture_title'] = $picture_title;
 
-        $extension1 = $data['profile_picture']->getClientOriginalExtension();
-        $file_name1 = (string) Str::uuid().'.'.$extension1;
-
-        $extension2 = $data['cover_picture']->getClientOriginalExtension();
-        $file_name2 = (string) Str::uuid().'.'.$extension2;
-
-        $s3 = \Storage::disk('s3');
+        if($data['audio_file']) {
+            $audio_extension = $data['audio_file']->getClientOriginalExtension();
+            $audio_file_name = (string) Str::uuid().'.'.$audio_extension;
+            $s3 = \Storage::disk('s3');
         
-        $s3UrlProfile = "artist_details/$user_id/";
-        $s3UrlCover = "artist_details/$user_id/";
+            $s3UrlAudio = "artist_porfolio/$user_id/";
 
-        $isFileUploadedProfile = Storage::disk('s3')->put($s3UrlProfile.$file_name1, file_get_contents($data['profile_picture']), 'public');
-        $s3_url_profile = env('AWS_URL').$s3UrlProfile.$file_name1;
+            $isFileUploadedAudio = Storage::disk('s3')->put($s3UrlAudio.$audio_file_name, file_get_contents($data['audio_file']), 'public');
+            $s3_url_audio = env('AWS_URL').$s3UrlAudio.$audio_file_name;
 
-        $isFileUploadedCover = Storage::disk('s3')->put($s3UrlCover.$file_name2, file_get_contents($data['cover_picture']), 'public');
-        $s3_url_cover = env('AWS_URL').$s3UrlCover.$file_name2;
+            $c_data['audio_file'] = $s3_url_audio;
+        }
 
-        // $s3UrlProfile = "artist_details/$user_id/";
-           
-        // if(array_key_exists('profile_picture', $data)){
-           
-        //     $image = $data['cover_picture'];
-        //     // $image_name = (string) Str::uuid();       
-            
-        //     $s3_url_profile = $this->pushMediaToS3($s3UrlProfile.$image, $image, 'public');
+        if($data['video_file']) {
+            $video_extension = $data['video_file']->getClientOriginalExtension();
+            $video_file_name = (string) Str::uuid().'.'.$video_extension;
+            $s3 = \Storage::disk('s3');
+        
+            $s3UrlVideo = "artist_porfolio/$user_id/";
 
-        // }
+            $isFileUploadedVideo = Storage::disk('s3')->put($s3UrlVideo.$video_file_name, file_get_contents($data['video_file']), 'public');
+            $s3_url_video = env('AWS_URL').$s3UrlVideo.$video_file_name;
 
-        // $s3UrlCover = "artist_details/$user_id/";
+            $c_data['video_file'] = $s3_url_video;
+        }
 
-        // if(array_key_exists('cover_picture', $data)){
-            
-        //     $image = $data['cover_picture'];
-        //     // $image_name = (string) Str::uuid();       
-            
-        //     $s3_url_cover = $this->pushMediaToS3($s3UrlCover.$image, $image, 'public');
+        if($data['picture_file']) {
+            $picture_extension = $data['picture_file']->getClientOriginalExtension();
+            $picture_file_name = (string) Str::uuid().'.'.$picture_extension;
+            $s3 = \Storage::disk('s3');
+        
+            $s3UrlPicture = "artist_porfolio/$user_id/";
 
-        // }
+            $isFileUploadedPicture = Storage::disk('s3')->put($s3UrlPicture.$picture_file_name, file_get_contents($data['picture_file']), 'public');
+            $s3_url_picture = env('AWS_URL').$s3UrlPicture.$picture_file_name;
 
-        $c_data['profile_picture'] = $s3_url_profile;
-        $c_data['cover_picture'] = $s3_url_cover;
+            $c_data['picture_file'] = $s3_url_picture;
+        }
 
-        $artistDetails = ArtistDetails::create($c_data);
+        $artistPorfolio = ArtistPorfolio::create($c_data);
 
-        return $artistDetails;
+        return $artistPorfolio;
     }
 
 
@@ -142,7 +137,7 @@ class EloquentArtistDetailsRepository implements ArtistDetailsRepository
         $d_data['profile_picture'] = $profile_picture;
         $d_data['cover_picture'] = $cover_picture;
 
-        $artistDetails = ArtistDetails::where('id', $id)->update($d_data);  
+        $artistDetails = ArtistPorfolio::where('id', $id)->update($d_data);  
 
         return $artistDetails;
     
@@ -156,7 +151,7 @@ class EloquentArtistDetailsRepository implements ArtistDetailsRepository
     {
         $artistDetails = $this->find($id);
 
-        if(!$artistDetails instanceof ArtistDetails) {
+        if(!$artistDetails instanceof ArtistPorfolio) {
             return false;
         }
         
@@ -170,7 +165,7 @@ class EloquentArtistDetailsRepository implements ArtistDetailsRepository
     public function filtered($filter, $operator)
     {
 
-        return ArtistDetails::select('artist_details.*')
+        return ArtistPorfolio::select('artist_porfolio.*')
         ->where(function($q) use ($filter, $operator){
             foreach ($filter as $key => $value) {
                 if(\array_key_exists($key, $operator)) {
