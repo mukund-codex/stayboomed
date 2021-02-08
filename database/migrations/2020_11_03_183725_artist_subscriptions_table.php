@@ -18,6 +18,7 @@ class ArtistSubscriptionsTable extends Migration
             $table->id('id');
             $table->foreignId('user_id')->index();
             $table->foreignId('subscription_id')->index();
+            $table->boolean('expired')->default(0);
             $table->timestamps();
             $table->softDeletes();
 

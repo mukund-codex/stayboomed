@@ -98,7 +98,7 @@ class UserController extends Controller
         $data = $request->all();
         $data['referral_code'] = $referral_code;
 
-        $user = $this->userRespository->save($request->all());
+        $user = $this->userRepository->save($data);
 
         return $this->respondWithItem($user, $this->userTransformer, true, HttpResponse::HTTP_CREATED, 'User Created');
     }

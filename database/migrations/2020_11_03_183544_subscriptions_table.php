@@ -21,6 +21,7 @@ class SubscriptionsTable extends Migration
             $table->string('price');
             $table->string('job_apply');
             $table->string('subscription_type');
+            $table->string('expiry');
             $table->timestamps();
             $table->softDeletes();
 

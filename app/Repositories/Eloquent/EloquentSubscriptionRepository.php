@@ -62,6 +62,7 @@ class EloquentSubscriptionRepository implements SubscriptionRepository
         $price = $data['price'];
         $job_apply = $data['job_apply'];
         $subscription_type = $data['subscription_type'];
+        $expiry = $data['expiry'];
             
         $c_data = [];
         $c_data['user_id'] = $user_id;
@@ -69,6 +70,7 @@ class EloquentSubscriptionRepository implements SubscriptionRepository
         $c_data['price'] = $price;
         $c_data['job_apply'] = $job_apply;
         $c_data['subscription_type'] = $subscription_type;
+        $c_data['expiry'] = $expiry;
 
         $subscription = Subscription::create($c_data);
 
@@ -87,6 +89,7 @@ class EloquentSubscriptionRepository implements SubscriptionRepository
         $price = $data['price'];
         $job_apply = $data['job_apply'];
         $subscription_type = $data['subscription_type'];
+        $expiry = $data['expiry'];
             
         $d_data = [];
         $d_data['user_id'] = $user_id;
@@ -94,6 +97,7 @@ class EloquentSubscriptionRepository implements SubscriptionRepository
         $d_data['price'] = $price;
         $d_data['job_apply'] = $job_apply;
         $d_data['subscription_type'] = $subscription_type;
+        $d_data['expiry'] = $expiry;
 
         $subscription = Subscription::where('id', $id)->update($d_data);  
 

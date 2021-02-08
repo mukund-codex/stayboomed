@@ -15,6 +15,7 @@ class SubscriptionTransformer extends TransformerAbstract
             'subscription_type' => $subscription->subscription_type,
             'price' => $subscription->price,
             'job_apply' => $subscription->job_apply,
+            'expiry' => $subscription->expiry,
             'users' => $subscription->user
         ];
 

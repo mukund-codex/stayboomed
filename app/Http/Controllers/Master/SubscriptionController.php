@@ -75,7 +75,8 @@ class SubscriptionController extends Controller
             'title' => 'required|min:5',
             'price' => 'required|numeric',
             'job_apply' => 'required|numeric',
-            'subscription_type' => 'required'
+            'subscription_type' => 'required',
+            'expiry' => 'required|numeric'
 
         ];
 
