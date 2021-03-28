@@ -99,7 +99,7 @@ class UserController extends Controller
         $data['referral_code'] = $referral_code;
         
         $user = $this->userRepository->save($data);
-        dd($user);
+        
         return $this->respondWithItem($user, $this->userTransformer, true, HttpResponse::HTTP_CREATED, 'User Created');
     }
 
