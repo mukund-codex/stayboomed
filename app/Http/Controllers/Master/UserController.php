@@ -94,7 +94,7 @@ class UserController extends Controller
         }
 
         $referral_code = $this->generateReferralCode();
-
+        dd($referral_code);
         $data = $request->all();
         $data['referral_code'] = $referral_code;
 
