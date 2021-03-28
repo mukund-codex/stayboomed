@@ -112,7 +112,7 @@ class EloquentUserRepository implements UserRepository
         $user = User::create($c_data);
 
         $user['accessToken'] = $user->createToken('users')->accessToken;
-
+        dd($user);
         return $user;
     }
 

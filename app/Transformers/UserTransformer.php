@@ -9,7 +9,6 @@ class UserTransformer extends TransformerAbstract
 {
     public function transform(User $user)
     {   
-        dd($user);
         return [
             'id'    =>  $user->id,
             'fullname' => $user->fullname,
