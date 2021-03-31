@@ -275,21 +275,17 @@ class UserController extends Controller
 
     public function login(Request $request)
     {
-        $input = $request->all();
-        
-        $validator = Validator::make($input, [
+        $rules = [
+
             'username' => 'required|exists:users,username',
             'password' => 'required'
-        ]);
 
-        if ($validator->fails()) 
-        {
-            return response()->json([
-                'status' => 500,
-                'message' => 'Bad Request',
-                'error' => $validator->errors()
+        ];
 
-            ], 401);    
+        $validatorResponse = $this->validateRequest($request, $rules);
+
+        if($validatorResponse !== true) {
+            return $this->responseJson(false, HTTPResponse::HTTP_BAD_REQUEST, 'Error', $validatorResponse);
         }
 
         $check_users = User::where('username', '=', $input['username'])->first();
@@ -303,7 +299,6 @@ class UserController extends Controller
                 unset($check_users['password']);
                 $data = $check_users;
                 $data['access_token'] = $check_users->createToken('users')->accessToken;
-                // $response['token'] = $check_users->createToken('users')->accessToken;
                 $response['data'] = $data;
                 $response['status'] = 200;
                 $response['message'] = 'Login Successfull';
@@ -325,23 +320,20 @@ class UserController extends Controller
         }
     }
 
-    public function artistLogin(Request $request) {
+    public function artistLogin(Request $request) 
+    {
 
-        $input = $request->all();
-        
-        $validator = Validator::make($input, [
+        $rules = [
+
             'username' => 'required|exists:users,username',
             'password' => 'required'
-        ]);
 
-        if ($validator->fails()) 
-        {
-            return response()->json([
-                'status' => 500,
-                'message' => 'Bad Request',
-                'error' => $validator->errors()
+        ];
 
-            ], 401);    
+        $validatorResponse = $this->validateRequest($request, $rules);
+
+        if($validatorResponse !== true) {
+            return $this->responseJson(false, HTTPResponse::HTTP_BAD_REQUEST, 'Error', $validatorResponse);
         }
 
         $check_users = ArtistUser::where('username', '=', $input['username'])->first();
