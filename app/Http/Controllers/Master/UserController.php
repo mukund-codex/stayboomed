@@ -275,6 +275,7 @@ class UserController extends Controller
 
     public function login(Request $request)
     {
+        $input = $request->all();
         $rules = [
 
             'username' => 'required|exists:users,username',
@@ -322,7 +323,7 @@ class UserController extends Controller
 
     public function artistLogin(Request $request) 
     {
-
+        $input = $request->all();
         $rules = [
 
             'username' => 'required|exists:users,username',
