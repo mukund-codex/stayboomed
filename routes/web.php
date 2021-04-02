@@ -150,7 +150,7 @@ $router->group(
                 
             });
 
-            $router->group(['prefix' => 'applied_jobs', 'middleware' => ['auth:users'], 'namespace' => 'Master'], 
+            $router->group(['prefix' => 'applied_jobs', 'namespace' => 'Master'], // 'middleware' => ['auth:users'], 
             function() use ($router) {
                 $router->get('', ['uses' => 'AppliedJobsController@index']);
                 $router->get('/show/{id:[0-9]}', ['uses' => 'AppliedJobsController@show']);
@@ -160,7 +160,7 @@ $router->group(
                 
             });
 
-            $router->group(['prefix' => 'artist_subscription', 'middleware' => ['auth:users'], 'namespace' => 'Master'],  //, 'middleware' => ['auth:user']
+            $router->group(['prefix' => 'artist_subscription', 'namespace' => 'Master'],  //, 'middleware' => ['auth:users'], 
             function() use ($router) {
                 $router->get('', ['uses' => 'ArtistSubscriptionController@index']);
                 $router->get('/show/{id:[0-9]}', ['uses' => 'ArtistSubscriptionController@show']);
@@ -170,7 +170,7 @@ $router->group(
                 
             });
 
-            $router->group(['prefix' => 'paid_users', 'middleware' => ['auth:users'], 'namespace' => 'Master'], 
+            $router->group(['prefix' => 'paid_users', 'namespace' => 'Master'], // 'middleware' => ['auth:users'], 
             function() use ($router) {
                 $router->get('', ['uses' => 'PaidUsersController@index']);
                 $router->get('/show/{id:[0-9]}', ['uses' => 'PaidUsersController@show']);
@@ -180,7 +180,7 @@ $router->group(
                 
             });
 
-            $router->group(['prefix' => 'feedback', 'middleware' => ['auth:users'], 'namespace' => 'Master'], 
+            $router->group(['prefix' => 'feedback', 'namespace' => 'Master'], // 'middleware' => ['auth:users'], 
             function() use ($router) {
                 $router->get('', ['uses' => 'FeedbackController@index']);
                 $router->get('/show/{id:[0-9]}', ['uses' => 'FeedbackController@show']);
@@ -189,7 +189,7 @@ $router->group(
                 $router->delete('/delete/{id:[0-9]}', ['uses' => 'FeedbackController@destroy']);
             });
 
-            $router->group(['prefix' => 'refer', 'middleware' => ['auth:users'], 'namespace' => 'Master'], 
+            $router->group(['prefix' => 'refer', 'namespace' => 'Master'], // 'middleware' => ['auth:users'], 
             function() use ($router) {
                 $router->get('', ['uses' => 'ReferController@index']);
                 $router->get('/show/{id:[0-9]}', ['uses' => 'ReferController@show']);
