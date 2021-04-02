@@ -100,7 +100,7 @@ $router->group(
                 
             // });
 
-            $router->group(['prefix' => 'provider_details', 'middleware' => ['auth:users'], 'namespace' => 'Master'], 
+            $router->group(['prefix' => 'provider_details', 'namespace' => 'Master'], //, 'middleware' => ['auth:users']
             function() use ($router) {
                 $router->get('', ['uses' => 'ProviderDetailsController@index']);
                 $router->get('/show/{id:[0-9]}', ['uses' => 'ProviderDetailsController@show']);
@@ -110,7 +110,7 @@ $router->group(
                 
             });
 
-            $router->group(['prefix' => 'job', 'middleware' => ['auth:users'], 'namespace' => 'Master'], 
+            $router->group(['prefix' => 'job', 'namespace' => 'Master'],  ///'middleware' => ['auth:users'],
             function() use ($router) {
                 $router->get('', ['uses' => 'JobController@index']);
                 $router->get('/show/{id:[0-9]}', ['uses' => 'JobController@show']);
@@ -120,7 +120,7 @@ $router->group(
                 
             });
 
-            $router->group(['prefix' => 'subscription', 'middleware' => ['auth:users'], 'namespace' => 'Master'], 
+            $router->group(['prefix' => 'subscription', 'namespace' => 'Master'],  // 'middleware' => ['auth:users'], 
             function() use ($router) {
                 $router->get('', ['uses' => 'SubscriptionController@index']);
                 $router->get('/show/{id:[0-9]}', ['uses' => 'SubscriptionController@show']);
