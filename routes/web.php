@@ -160,6 +160,16 @@ $router->group(
                 
             });
 
+            $router->group(['prefix' => 'save_jobs', 'namespace' => 'Master'], // 'middleware' => ['auth:users'], 
+            function() use ($router) {
+                $router->get('', ['uses' => 'SaveJobsController@index']);
+                $router->get('/show/{id:[0-9]}', ['uses' => 'SaveJobsController@show']);
+                $router->post('/create', 'SaveJobsController@store');
+                $router->put('/update/{id:[0-9]}', 'SaveJobsController@update');
+                $router->delete('/delete/{id:[0-9]}', ['uses' => 'SaveJobsController@destroy']);
+                
+            });
+
             $router->group(['prefix' => 'artist_subscription', 'namespace' => 'Master'],  //, 'middleware' => ['auth:users'], 
             function() use ($router) {
                 $router->get('', ['uses' => 'ArtistSubscriptionController@index']);

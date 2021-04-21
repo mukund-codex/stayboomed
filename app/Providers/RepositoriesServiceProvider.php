@@ -18,7 +18,8 @@ use App\Models\{
     PaidUsers,
     Feedback,
     Refer,
-    ArtistPorfolio
+    ArtistPorfolio,
+    SaveJobs
 };
 
 use App\Repositories\Contracts\{
@@ -36,7 +37,8 @@ use App\Repositories\Contracts\{
     PaidUsersRepository,
     FeedbackRepository,
     ReferRepository,
-    ArtistPorfolioRepository
+    ArtistPorfolioRepository,
+    SaveJobsRepository
 };
 
 use App\Repositories\Eloquent\{
@@ -54,7 +56,8 @@ use App\Repositories\Eloquent\{
     EloquentFeedbackRepository,
     EloquentReferRepository,
     EloquentArtistPorfolioRepository,
-    EloquentArtistSubscriptionRepository
+    EloquentArtistSubscriptionRepository,
+    EloquentSaveJobsRepository
 };
 
 class RepositoriesServiceProvider extends ServiceProvider
@@ -125,6 +128,10 @@ class RepositoriesServiceProvider extends ServiceProvider
         $this->app->bind(ArtistPorfolioRepository::class, function () {
             return new EloquentArtistPorfolioRepository(new Refer());
         });
+
+        $this->app->bind(SaveJobsRepository::class, function () {
+            return new EloquentSaveJobsRepository(new SaveJobs());
+        });
     }
 
     /**
@@ -149,7 +156,8 @@ class RepositoriesServiceProvider extends ServiceProvider
             PaidUsers::class,
             Feedback::class,
             Refer::class,
-            ArtistPorfolio::class
+            ArtistPorfolio::class,
+            SaveJobs::class
         ];
     }
 }

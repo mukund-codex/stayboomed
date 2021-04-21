@@ -46,7 +46,7 @@ class AppliedJobsController extends Controller
             ),[ "applied_jobs.id" => "=", "applied_jobs.user_id" => "=", 'applied_jobs.job_id' => "="]
             )->paginate();
 
-        $uploadParameters['fields'] = ['User name', 'jon name'];
+        $uploadParameters['fields'] = ['User name', 'job name'];
 
         return $this->respondWithCollection($data, $this->appliedJobsTransformer, true, HttpResponse::HTTP_OK, 'Applied Job List', $uploadParameters);
     }
