@@ -122,7 +122,7 @@ class EloquentSaveJobsRepository implements SaveJobsRepository
     public function filtered($filter, $operator)
     {
 
-        return AppliedJobs::select('saved_jobs.*')
+        return SaveJobs::select('saved_jobs.*')
         ->where(function($q) use ($filter, $operator){
             foreach ($filter as $key => $value) {
                 if(\array_key_exists($key, $operator)) {
@@ -136,7 +136,7 @@ class EloquentSaveJobsRepository implements SaveJobsRepository
                 }
             }                        
         })
-        ->whereNull('applied_jobs.deleted_at');
+        ->whereNull('saved_jobs.deleted_at');
     }
 
     /**

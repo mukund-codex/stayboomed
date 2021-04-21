@@ -31,7 +31,7 @@ class SaveJobsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         //
         if (\array_key_exists('id', $request->all())) {
@@ -40,7 +40,7 @@ class SaveJobsController extends Controller
             }
         }
 
-        $data = $this->appliedJobsRespository->filtered(
+        $data = $this->saveJobsRespository->filtered(
             $this->recursive_change_key(
             $this->filteredRequestParams($request, ['id','user_id', 'job_id']),
             ["id" => "save_jobs.id", "user_id"=>"save_jobs.user_id", 'job_id' => 'save_jobs.job_id']
