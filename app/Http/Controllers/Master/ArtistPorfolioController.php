@@ -30,7 +30,7 @@ class ArtistPorfolioController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         //
         if (\array_key_exists('id', $request->all())) {
@@ -46,9 +46,9 @@ class ArtistPorfolioController extends Controller
             ),[ "artist_porfolio.id" => "=", "artist_porfolio.user_id" => "="]
             )->paginate();
 
-        $uploadParameters['fields'] = ['User name', 'jon name'];
+        $uploadParameters['fields'] = [];
 
-        return $this->respondWithCollection($data, $this->artistPorfolioTransformer, true, HttpResponse::HTTP_OK, 'Subscription List', $uploadParameters);
+        return $this->respondWithCollection($data, $this->artistPorfolioTransformer, true, HttpResponse::HTTP_OK, 'Artist Portfolio List', $uploadParameters);
     }
 
     /**

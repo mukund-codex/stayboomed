@@ -179,7 +179,7 @@ class EloquentArtistPorfolioRepository implements ArtistPorfolioRepository
                 }
             }                        
         })
-        ->whereNull('artist_details.deleted_at');
+        ->whereNull('artist_porfolio.deleted_at');
     }
 
     /**
