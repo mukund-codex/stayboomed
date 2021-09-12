@@ -75,7 +75,7 @@ $router->group(
                 $router->post('/create', 'CityController@store');
                 $router->put('/update/{id:[0-9]}', 'CityController@update');
                 $router->delete('/delete/{id:[0-9]}', ['uses' => 'CityController@destroy']);
-                
+ 
             });
 
             $router->group(['prefix' => 'profession', 'namespace' => 'Master'],  //, , 'middleware' => ['auth:users']
@@ -206,6 +206,56 @@ $router->group(
                 $router->post('/create', 'ReferController@store');
                 $router->put('/update/{id:[0-9]}', 'ReferController@update');
                 $router->delete('/delete/{id:[0-9]}', ['uses' => 'ReferController@destroy']);
+            });
+
+            $router->group(['prefix' => 'expertise', 'namespace' => 'Master'], ///'middleware' => ['auth:users'], 
+            function() use ($router) {
+                $router->get('', ['uses' => 'ExpertiseController@index']);
+                $router->get('/show/{id:[0-9]}', ['uses' => 'ExpertiseController@show']);
+                $router->post('/create', 'ExpertiseController@store');
+                $router->put('/update/{id:[0-9]}', 'ExpertiseController@update');
+                $router->delete('/delete/{id:[0-9]}', ['uses' => 'ExpertiseController@destroy']);
+ 
+            });
+
+            $router->group(['prefix' => 'category', 'namespace' => 'Master'], ///'middleware' => ['auth:users'], 
+            function() use ($router) {
+                $router->get('', ['uses' => 'CategoryController@index']);
+                $router->get('/show/{id:[0-9]}', ['uses' => 'CategoryController@show']);
+                $router->post('/create', 'CategoryController@store');
+                $router->put('/update/{id:[0-9]}', 'CategoryController@update');
+                $router->delete('/delete/{id:[0-9]}', ['uses' => 'CategoryController@destroy']);
+ 
+            });
+
+            $router->group(['prefix' => 'language', 'namespace' => 'Master'], ///'middleware' => ['auth:users'], 
+            function() use ($router) {
+                $router->get('', ['uses' => 'LanguageController@index']);
+                $router->get('/show/{id:[0-9]}', ['uses' => 'LanguageController@show']);
+                $router->post('/create', 'LanguageController@store');
+                $router->put('/update/{id:[0-9]}', 'LanguageController@update');
+                $router->delete('/delete/{id:[0-9]}', ['uses' => 'LanguageController@destroy']);
+ 
+            });
+
+            $router->group(['prefix' => 'jobType', 'namespace' => 'Master'], ///'middleware' => ['auth:users'], 
+            function() use ($router) {
+                $router->get('', ['uses' => 'JobTypeController@index']);
+                $router->get('/show/{id:[0-9]}', ['uses' => 'JobTypeController@show']);
+                $router->post('/create', 'JobTypeController@store');
+                $router->put('/update/{id:[0-9]}', 'JobTypeController@update');
+                $router->delete('/delete/{id:[0-9]}', ['uses' => 'JobTypeController@destroy']);
+ 
+            });
+
+            $router->group(['prefix' => 'otherCategory', 'namespace' => 'Master'], ///'middleware' => ['auth:users'], 
+            function() use ($router) {
+                $router->get('', ['uses' => 'OtherCategoriesController@index']);
+                $router->get('/show/{id:[0-9]}', ['uses' => 'OtherCategoriesController@show']);
+                $router->post('/create', 'OtherCategoriesController@store');
+                $router->put('/update/{id:[0-9]}', 'OtherCategoriesController@update');
+                $router->delete('/delete/{id:[0-9]}', ['uses' => 'OtherCategoriesController@destroy']);
+ 
             });
         });
     }

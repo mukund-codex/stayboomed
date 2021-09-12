@@ -19,7 +19,12 @@ use App\Models\{
     Feedback,
     Refer,
     ArtistPorfolio,
-    SaveJobs
+    SaveJobs,
+    Expertise,
+    Categories,
+    Language,
+    JobType,
+    OtherCategories,
 };
 
 use App\Repositories\Contracts\{
@@ -38,7 +43,12 @@ use App\Repositories\Contracts\{
     FeedbackRepository,
     ReferRepository,
     ArtistPorfolioRepository,
-    SaveJobsRepository
+    SaveJobsRepository,
+    ExpertiseRepository,
+    CategoryRepository,
+    LanguageRepository,
+    JobTypeRepository,
+    OtherCategoryRepository,
 };
 
 use App\Repositories\Eloquent\{
@@ -57,7 +67,12 @@ use App\Repositories\Eloquent\{
     EloquentReferRepository,
     EloquentArtistPorfolioRepository,
     EloquentArtistSubscriptionRepository,
-    EloquentSaveJobsRepository
+    EloquentSaveJobsRepository,
+    EloquentExpertiseRepository,
+    EloquentCategoryRepository,
+    EloquentLanguageRepository,
+    EloquentJobTypeRepository,
+    EloquentOtherCategoryRepository,
 };
 
 class RepositoriesServiceProvider extends ServiceProvider
@@ -132,6 +147,26 @@ class RepositoriesServiceProvider extends ServiceProvider
         $this->app->bind(SaveJobsRepository::class, function () {
             return new EloquentSaveJobsRepository(new SaveJobs());
         });
+
+        $this->app->bind(ExpertiseRepository::class, function () {
+            return new EloquentExpertiseRepository(new Expertise());
+        });
+
+        $this->app->bind(CategoryRepository::class, function () {
+            return new EloquentCategoryRepository(new Categories());
+        });
+
+        $this->app->bind(LanguageRepository::class, function () {
+            return new EloquentLanguageRepository(new Language());
+        });
+
+        $this->app->bind(JobTypeRepository::class, function () {
+            return new EloquentJobTypeRepository(new JobType());
+        });
+
+        $this->app->bind(OtherCategoryRepository::class, function () {
+            return new EloquentOtherCategoryRepository(new OtherCategories());
+        });
     }
 
     /**
@@ -157,7 +192,12 @@ class RepositoriesServiceProvider extends ServiceProvider
             Feedback::class,
             Refer::class,
             ArtistPorfolio::class,
-            SaveJobs::class
+            SaveJobs::class,
+            Expertise::class,
+            Category::class,
+            Language::class,
+            JobType::class,
+            OtherCategories::class,
         ];
     }
 }

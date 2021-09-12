@@ -15,6 +15,7 @@ use Illuminate\Validation\Rule;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
 use Validator;
+use DB;
 
 class UserController extends Controller
 {
