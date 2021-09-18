@@ -249,6 +249,30 @@ class UserController extends Controller
 
     }
 
+    public function resetpassword(Request $request, $id) {
+
+        $rules = [
+            'new_password' => 'min:6',
+        ];
+
+        $validatorResponse = $this->validateRequest($request, $rules);
+
+        // dd($validatorResponse);
+        if($validatorResponse !== true) {
+            return $this->responseJson(false, HTTPResponse::HTTP_BAD_REQUEST, 'Error', $validatorResponse);
+        }
+
+        $isUserUpdated = $this->artistUserRepository->updatePassword($id, $request->all());
+
+        if(!$isUserUpdated) {
+            return $this->responseJson(false, 400, 'Error: User Update Failed', []);
+        }
+
+        $updatedUser = $this->artistUserRepository->find($id);
+        return $this->respondWithItem($updatedUser, $this->artistUserTransformer, true, 201, 'Artist Updated');
+
+    }
+
     /**
      * Remove the specified resource from storage.
      *

@@ -158,6 +158,24 @@ class EloquentUserRepository implements UserRepository
     /**
     * {@inheritdoc}
     */
+    public function updatePassword($id, array $data)
+    {
+
+        $password = $data['new_password'];
+            
+        $d_data = [];
+        $d_data['password'] = Hash::make($password);
+
+        $user = User::where('id', $id)->update($d_data);  
+
+        return $user;
+    
+    }
+
+
+    /**
+    * {@inheritdoc}
+    */
      public function delete($id)
     {
         $user = $this->find($id);

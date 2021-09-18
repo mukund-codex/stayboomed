@@ -124,6 +124,32 @@ class ArtistDetailsController extends Controller
         //
     }
 
+    public function updateArtistAlternateDetails(Request $request, $id) {
+
+        $rules = [
+
+            'alternate_email' => 'required|email',
+            'alternate_number' => 'required|numeric',
+
+        ];
+
+        $validatorResponse = $this->validateRequest($request, $rules);
+
+        if($validatorResponse !== true) {
+            return $this->responseJson(false, HTTPResponse::HTTP_BAD_REQUEST, 'Error', $validatorResponse);
+        }
+
+        $isUserUpdated = $this->artistDetailsRespository->updateAlternateDetails($id, $request->all());
+
+        if(!$isUserUpdated) {
+            return $this->responseJson(false, 400, 'Error: User Update Failed', []);
+        }
+
+        $updatedUser = $this->artistDetailsRespository->find($id);
+        return $this->respondWithItem($updatedUser, $this->artistDetailsTransformer, true, 201, 'Artist Updated');
+
+    }
+
     /**
      * Remove the specified resource from storage.
      *

@@ -148,6 +148,26 @@ class EloquentArtistDetailsRepository implements ArtistDetailsRepository
     
     }
 
+        /**
+    * {@inheritdoc}
+    */
+    public function updateAlternateDetails($id, array $data)
+    {
+
+        $alternateEmail = $data['alternate_email'];
+        $alternateNumber = $data['alternate_number'];
+            
+        $d_data = [];
+        $d_data['alternate_email'] = $alternateEmail;
+        $d_data['alternate_number'] = $alternateNumber;
+
+        DB::enableQueryLog(); // Enable query log
+
+        $user = ArtistDetails::where('id', $id)->update($d_data);  
+        
+        return $user;
+    
+    }
 
     /**
     * {@inheritdoc}

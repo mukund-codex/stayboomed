@@ -1,4 +1,4 @@
-<?php
+app/Http/Controllers/Master/ArtistDetailsController.php<?php
 
 namespace App\Http\Controllers\Master;
 
@@ -68,15 +68,15 @@ class FeedbackController extends Controller
      */
     public function store(Request $request)
     {
-        //
         $rules = [
             "user_id" => 'required|numeric|exists:users,id',
             "ratings" => 'required',
+            "comments" => 'required',
         ];
 
         $validatorResponse = $this->validateRequest($request, $rules);
 
-        if($validatorResponse != true) {
+        if($validatorResponse != 'true') {
             return $this->responseJson(false, HttpResponse::HTTP_BAD_REQUEST, 'Error', $validatorResponse);
         }
 

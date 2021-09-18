@@ -17,7 +17,9 @@ class ArtistDetailsTransformer extends TransformerAbstract
             'permanent_address' => $details->permanent_address,
             'profile_picture' => $details->profile_picture,
             'cover_picture' => $details->cover_picture,
-            'user_data' => $details->users
+            'user_data' => $details->users,
+            'alternate_email' => $details->alternate_email,
+            'alternate_number' => $details->alternate_number
         ];
 
         return $formatterDetails;

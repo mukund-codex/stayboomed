@@ -26,7 +26,7 @@ class ArtistDetails extends Model
      * @var array
      */
     protected $fillable = [
-        'user_id', 'country', 'zip_code', 'corresponding_address', 'permanent_address', 'profile_picture', 'cover_picture'
+        'user_id', 'country', 'zip_code', 'corresponding_address', 'permanent_address', 'profile_picture', 'cover_picture', 'alternate_email', 'alternate_number'
     ];
 
     /**

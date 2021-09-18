@@ -23,6 +23,8 @@ class ArtistDetailsTable extends Migration
             $table->string('zip_code');
             $table->string('profile_picture');
             $table->string('cover_picture');
+            $table->string('alternate_email')->nullable();
+            $table->string('alternate_number')->nullable();
             $table->timestamps();
             $table->softDeletes();
 

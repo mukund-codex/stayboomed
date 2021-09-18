@@ -169,6 +169,23 @@ class EloquentArtistUserRepository implements ArtistUserRepository
     
     }
 
+        /**
+    * {@inheritdoc}
+    */
+    public function updatePassword($id, array $data)
+    {
+
+        $password = $data['new_password'];
+            
+        $d_data = [];
+        $d_data['password'] = Hash::make($password);
+
+        $user = ArtistUser::where('id', $id)->update($d_data);  
+
+        return $user;
+    
+    }
+
 
     /**
     * {@inheritdoc}
