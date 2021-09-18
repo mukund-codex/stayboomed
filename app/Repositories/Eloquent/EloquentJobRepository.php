@@ -78,6 +78,11 @@ class EloquentJobRepository implements JobRepository
         $details = $data['details'];
         $language = $data['language'];
         $subscription_type = $data['subscription_type'];
+        $expertise = $data['expertise'];
+        $category = $data['category'];
+        $language = $data['language'];
+        $job_type = $data['job_type'];
+        $other_categories = $data['other_categories'];
             
         $c_data = [];
         $c_data['user_id'] = $user_id;
@@ -101,6 +106,11 @@ class EloquentJobRepository implements JobRepository
         $c_data['details'] = $details;
         $c_data['language'] = $language;
         $c_data['subscription_type'] = $subscription_type;
+        $c_data['expertise'] = $expertise;
+        $c_data['category'] = $category;
+        $c_data['language'] = $language;
+        $c_data['job_type'] = $job_type;
+        $c_data['other_categories'] = $other_categories;
 
         $job = Job::create($c_data);
 

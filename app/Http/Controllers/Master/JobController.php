@@ -82,7 +82,6 @@ class JobController extends Controller
             'gender' => 'required|in:male,female,other',
             'age' => 'required|numeric',
             'city_leaving' => 'required|regex:/^[a-zA-Z0-9 _-]*$/',
-            'language' => 'required',
             'physical_attribute' => 'required',
             'experience' => 'required',
             'education' => 'required',
@@ -90,7 +89,12 @@ class JobController extends Controller
             'budget' => 'required|regex:/^[a-zA-Z0-9 _-]*$/',
             'budget_time' => 'required',
             'details' => 'required|regex:/^[a-zA-Z0-9 _-]*$/',
-            'subscription_type' => 'required'
+            'subscription_type' => 'required',
+            'expertise' => 'required',
+            'category' => 'required',
+            'language' => 'required',
+            'job_type' => 'required',
+            'other_categories' => 'required'
 
         ];
 

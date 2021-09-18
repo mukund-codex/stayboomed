@@ -28,7 +28,6 @@ class NewJobsTable extends Migration
             $table->string('gender');
             $table->string('age');
             $table->string('city_leaving');
-            $table->string('language');
             $table->string('physical_attribute');
             $table->string('experience');
             $table->string('education');
@@ -37,6 +36,11 @@ class NewJobsTable extends Migration
             $table->string('budget');
             $table->string('budget_time');
             $table->string('details');
+            $table->json('expertise');
+            $table->json('category');
+            $table->json('language');
+            $table->json('job_type');
+            $table->json('other_categories');
             $table->timestamps();
             $table->softDeletes();
 

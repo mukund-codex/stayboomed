@@ -31,7 +31,12 @@ class JobTransformer extends TransformerAbstract
             'details' => $job->details,
             'subscription_type' => $job->subscription_type,
             'user' => $job->user,
-            'profession' => $job->profession
+            'profession' => $job->profession,
+            'expertise' => $job->expertise,
+            'category' => $job->category,
+            'language' => $job->language,
+            'job_type' => $job->job_type,
+            'other_categories' => $job->other_categories
      ];
 
     }

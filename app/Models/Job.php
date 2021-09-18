@@ -26,7 +26,7 @@ class Job extends Model
      * @var array
      */
     protected $fillable = [
-        'user_id', 'title', 'publish_date', 'end_date', 'job_location', 'job_description', 'job_tags', 'vacancies', 'job_duration', 'gender', 'age', 'city_leaving', 'language', 'physical_attribute', 'experience', 'education', 'profession_id', 'subscription_type', 'budget', 'budget_time', 'details'
+        'user_id', 'title', 'publish_date', 'end_date', 'job_location', 'job_description', 'job_tags', 'vacancies', 'job_duration', 'gender', 'age', 'city_leaving', 'language', 'physical_attribute', 'experience', 'education', 'profession_id', 'subscription_type', 'budget', 'budget_time', 'details', 'expertise', 'category', 'language', 'job_type', 'other_categories'
     ];
 
     /**
@@ -38,6 +38,14 @@ class Job extends Model
     //    'id' => 'string'
     //];
     
+    protected $casts = [
+        'expertise'         => 'array',
+        'category'          => 'array',
+        'language'          => 'array',
+        'job_type'          => 'array',
+        'other_categories'  => 'array',
+    ];
+
     public function profession() {
         return $this->belongsTo(Profession::class);
     }
