@@ -1,4 +1,4 @@
-app/Http/Controllers/Master/ArtistDetailsController.php<?php
+<?php
 
 namespace App\Http\Controllers\Master;
 
