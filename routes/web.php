@@ -138,6 +138,7 @@ $router->group(
                 $router->put('/update/{id:[0-9]}', 'ArtistDetailsController@update');
                 $router->post('/updateAlternateDetails/{id:[0-9]}', 'ArtistDetailsController@updateArtistAlternateDetails');
                 $router->delete('/delete/{id:[0-9]}', ['uses' => 'ArtistDetailsController@destroy']);
+                $router->get('/getAlternateUserDetails/{id:[0-9]}', ['uses' => 'ArtistDetailsController@getAlternateDetails']);
                 
             });
 

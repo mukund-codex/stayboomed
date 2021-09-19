@@ -1,4 +1,4 @@
-<?php
+app/Repositories/Eloquent/EloquentUserRepository.php<?php
 
 namespace App\Repositories\Eloquent;
 
@@ -161,9 +161,7 @@ class EloquentArtistDetailsRepository implements ArtistDetailsRepository
         $d_data['alternate_email'] = $alternateEmail;
         $d_data['alternate_number'] = $alternateNumber;
 
-        DB::enableQueryLog(); // Enable query log
-
-        $user = ArtistDetails::where('id', $id)->update($d_data);  
+        $user = ArtistDetails::where('user_id', $id)->update($d_data);  
         
         return $user;
     

@@ -170,4 +170,5 @@ class CategoryController extends Controller
 
         return $this->responseJson(true, 200, 'State Deleted', []);
     }
+
 }

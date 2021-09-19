@@ -1,4 +1,4 @@
-<?php
+findOneBy<?php
 
 namespace App\Repositories\Eloquent;
 
@@ -168,6 +168,25 @@ class EloquentUserRepository implements UserRepository
 
         $user = User::where('id', $id)->update($d_data);  
 
+        return $user;
+    
+    }
+
+            /**
+    * {@inheritdoc}
+    */
+    public function updatePrimaryDetails($id, array $data)
+    {
+
+        $primaryEmail = $data['primary_email'];
+        $primaryNumber = $data['primary_number'];
+            
+        $d_data = [];
+        $d_data['email'] = $primaryEmail;
+        $d_data['number'] = $primaryNumber;
+
+        $user = User::where('id', $id)->update($d_data);  
+        
         return $user;
     
     }

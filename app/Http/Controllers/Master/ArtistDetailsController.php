@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\ArtistDetails;
 use Symfony\Component\HttpFoundation\Response as HttpResponse;
 use App\Repositories\Contracts\ArtistDetailsRepository;
+use App\Repositories\Contracts\UserRepository;
 use App\Transformers\ArtistDetailsTransformer;
 use Ramsey\Uuid\Uuid;
 use App\Helpers\Common;
@@ -16,10 +17,11 @@ use Carbon\Carbon;
 
 class ArtistDetailsController extends Controller
 {
-    public function __construct(ArtistDetailsRepository $artistDetailsRespository, ArtistDetailsTransformer $artistDetailsTransformer)
+    public function __construct(ArtistDetailsRepository $artistDetailsRespository, UserRepository $userRepository, ArtistDetailsTransformer $artistDetailsTransformer)
     {
         
         $this->artistDetailsRespository = $artistDetailsRespository;
+        $this->userRepository = $userRepository;
         $this->artistDetailsTransformer = $artistDetailsTransformer;
         
     }
@@ -129,7 +131,9 @@ class ArtistDetailsController extends Controller
         $rules = [
 
             'alternate_email' => 'required|email',
+            'primary_email' => 'required|email',
             'alternate_number' => 'required|numeric',
+            'primary_number' => 'required|numeric',
 
         ];
 
@@ -139,13 +143,15 @@ class ArtistDetailsController extends Controller
             return $this->responseJson(false, HTTPResponse::HTTP_BAD_REQUEST, 'Error', $validatorResponse);
         }
 
-        $isUserUpdated = $this->artistDetailsRespository->updateAlternateDetails($id, $request->all());
+        $isUserAlternateUpdated = $this->artistDetailsRespository->updateAlternateDetails($id, $request->all());
 
-        if(!$isUserUpdated) {
+        $isUserPrimaryUpdated = $this->userRepository->updatePrimaryDetails($id, $request->all());
+
+        if(!$isUserAlternateUpdated || !$isUserPrimaryUpdated ) {
             return $this->responseJson(false, 400, 'Error: User Update Failed', []);
         }
 
-        $updatedUser = $this->artistDetailsRespository->find($id);
+        $updatedUser = $this->artistDetailsRespository->findOneBy(['user_id' => $id]);
         return $this->respondWithItem($updatedUser, $this->artistDetailsTransformer, true, 201, 'Artist Updated');
 
     }
@@ -159,5 +165,27 @@ class ArtistDetailsController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+
+        /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function getAlternateDetails($id)
+    {
+        
+        $alternateDetails = $this->artistDetailsRespository->findOneBy(['user_id' => $id]);
+        $primaryDetails = $this->userRepository->find($id);
+
+
+        $data = ['alternate_email' => $alternateDetails->alternate_email, 
+                 'alternate_number' => $alternateDetails->alternate_number, 
+                 'primary_email' => $primaryDetails->email, 
+                 'primary_number' => $primaryDetails->number];
+
+        return $this->responseJson(true, 200, 'User Details', [], $data);
     }
 }
