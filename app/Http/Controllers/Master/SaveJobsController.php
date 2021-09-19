@@ -90,7 +90,7 @@ class SaveJobsController extends Controller
         
         $save = $this->saveJobsRespository->save($request->all()); 
         
-        return $this->respondWithItem($save, $this->saveTransformer, true, HttpResponse::HTTP_CREATED, 'Job Saved');
+        return $this->respondWithItem($save, $this->saveJobsTransformer, true, HttpResponse::HTTP_CREATED, 'Job Saved');
 
     }
 

@@ -25,7 +25,7 @@ class NewJobsTable extends Migration
             $table->string('job_tags');
             $table->string('vacancies');
             $table->string('job_duration');
-            $table->string('gender');
+            $table->json('gender');
             $table->string('age');
             $table->string('city_leaving');
             $table->string('physical_attribute');

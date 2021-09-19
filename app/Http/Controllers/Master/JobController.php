@@ -79,7 +79,7 @@ class JobController extends Controller
             'job_tags' => 'required',
             'vacancies' => 'required|numeric',
             'job_duration' => 'required',
-            'gender' => 'required|in:male,female,other',
+            'gender' => 'required',
             'age' => 'required|numeric',
             'city_leaving' => 'required|regex:/^[a-zA-Z0-9 _-]*$/',
             'physical_attribute' => 'required',

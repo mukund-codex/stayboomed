@@ -111,7 +111,7 @@ class UserController extends Controller
             'fullname' => 'required|unique:users,fullname,NULL,id,deleted_at,NULL|regex:/^[\pL\s\-]+$/u|max:150|min:5',
             'email' => 'required|email|unique:users,email,NULL,id,deleted_at,NULL',
             'username' => 'required|unique:users,username,NULL,id,deleted_at,NULL',
-            'password' => 'required|min:6',
+            'password' => 'required|min:6|regex:/^[\pL\s\-]+$/u',
             'confirm_password' => 'required|same:password',
             'number' => 'required|numeric:unique:users,number,NULL,id,deleted_at,NULL',
             'state_id' => 'required|exists:state_master,id',

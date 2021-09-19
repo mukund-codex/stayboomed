@@ -44,6 +44,7 @@ class Job extends Model
         'language'          => 'array',
         'job_type'          => 'array',
         'other_categories'  => 'array',
+        'gender'            => 'array',
     ];
 
     public function profession() {
