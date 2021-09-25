@@ -1,4 +1,4 @@
-findOneBy<?php
+<?php
 
 namespace App\Repositories\Eloquent;
 
