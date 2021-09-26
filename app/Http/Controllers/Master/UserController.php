@@ -270,7 +270,7 @@ class UserController extends Controller
             return $this->responseJson(false, 400, 'Error: User Update Failed', []);
         }
 
-        $updatedUser = $this->artistUserRepository->find($id);
+        $updatedUser = $this->artistUserRepository->find($requestData['user_id']);
         return $this->respondWithItem($updatedUser, $this->artistUserTransformer, true, 201, 'Artist Updated');
 
     }
