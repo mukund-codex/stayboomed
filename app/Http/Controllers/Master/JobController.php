@@ -80,18 +80,11 @@ class JobController extends Controller
             'vacancies' => 'required|numeric',
             'job_duration' => 'required',
             'gender' => 'required',
-            'age' => 'required|numeric', //this will be range like [20,30]
-            // 'city_leaving' => 'required|regex:/^[a-zA-Z0-9 _-]*$/',
-            // 'physical_attribute' => 'required',
-            // 'experience' => 'required',
-            // 'education' => 'required',
-            // 'profession_id' => 'required|exists:profession_master,id',
-            'budget' => 'required|regex:/^[a-zA-Z0-9 _-]*$/', //budget will be from and to
-            // 'budget_time' => 'required',
-            // 'details' => 'required|regex:/^[a-zA-Z0-9 _-]*$/',
+            'age' => 'required', //this will be range like [20,30]
+            'budget' => 'required', //budget will be from and to
 
-            // 'jobStartDate' => 'required|regex:/^[a-zA-Z0-9 _-]*$/', //new input
-            // 'jobEndDate' => 'required|regex:/^[a-zA-Z0-9 _-]*$/', //new input
+            // 'jobStartDate' => 'required', //new input
+            // 'jobEndDate' => 'required', //new input
             // 'scriptForAudition' => 'required', //new input
             'subscription_type' => 'required',
             'expertise' => 'required',

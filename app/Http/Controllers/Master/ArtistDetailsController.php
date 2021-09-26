@@ -180,9 +180,11 @@ class ArtistDetailsController extends Controller
         $alternateDetails = $this->artistDetailsRespository->findOneBy(['user_id' => $id]);
         $primaryDetails = $this->userRepository->find($id);
 
+        $alternateEmail = !empty($alternateDetails->alternate_email) ? $alternateDetails->alternate_email : '';  
+        $alternateNumber = !empty($alternateDetails->alternate_number) ? $alternateDetails->alternate_number : '';  
 
-        $data = ['alternate_email' => $alternateDetails->alternate_email, 
-                 'alternate_number' => $alternateDetails->alternate_number, 
+        $data = ['alternate_email' => $alternateEmail, 
+                 'alternate_number' => $alternateNumber, 
                  'primary_email' => $primaryDetails->email, 
                  'primary_number' => $primaryDetails->number];
 
