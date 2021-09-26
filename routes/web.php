@@ -50,7 +50,7 @@ $router->group(
                     $router->post('/import', ['middleware' => ['auth:users'], 'uses' => 'UserController@upload']);
                     $router->post('/profile', ['middleware' => ['auth:users'], 'uses' => 'UserController@profile']);
                     $router->post('/editprofile', ['middleware' => ['auth:users'], 'uses' => 'UserController@editprofile']);
-                    $router->post('/resetpassword/{id}', ['middleware' => [], 'uses' => 'UserController@resetpassword']);
+                    $router->post('/resetpassword', ['middleware' => [], 'uses' => 'UserController@resetpassword']);
                     $router->get('/download', ['middleware' => ['auth:users'], 'uses' => 'UserController@download']);
                     $router->delete('/delete/{id:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}}', ['middleware' => ['auth:users'], 'uses' => 'UserController@destroy']);
                     $router->post('/delete_all', ['middleware' => ['auth:users'], 'uses' => 'UserController@destroy_all']);
