@@ -130,9 +130,9 @@ class ArtistDetailsController extends Controller
 
         $rules = [
 
-            'alternate_email' => 'required|email',
+            'alternate_email' => 'email',
             'primary_email' => 'required|email',
-            'alternate_number' => 'required|numeric',
+            'alternate_number' => 'numeric',
             'primary_number' => 'required|numeric',
             'user_id' => 'required|exists:users,id',
 
