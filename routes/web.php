@@ -136,7 +136,7 @@ $router->group(
                 $router->get('/show/{id:[0-9]}', ['uses' => 'ArtistDetailsController@show']);
                 $router->post('/create', 'ArtistDetailsController@store');
                 $router->put('/update/{id:[0-9]}', 'ArtistDetailsController@update');
-                $router->post('/updateAlternateDetails/{id:[0-9]}', 'ArtistDetailsController@updateArtistAlternateDetails');
+                $router->post('/updateAlternateDetails', 'ArtistDetailsController@updateArtistAlternateDetails');
                 $router->delete('/delete/{id:[0-9]}', ['uses' => 'ArtistDetailsController@destroy']);
                 $router->get('/getAlternateUserDetails/{id:[0-9]}', ['uses' => 'ArtistDetailsController@getAlternateDetails']);
                 

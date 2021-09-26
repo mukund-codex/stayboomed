@@ -72,26 +72,30 @@ class JobController extends Controller
         $rules = [
             'user_id' => 'required|exists:users,id',
             'title' => 'required|min:5',
-            'publish_date' => 'required|date',
-            'end_date' => 'required|date',
+            'publish_start_date' => 'date',
+            'publish_end_date' => 'required|date',
             'job_location' => 'required',
             'job_description' => 'required',
-            'job_tags' => 'required',
-            'vacancies' => 'required|numeric',
-            'job_duration' => 'required',
+            'job_tags' => 'required', //string
+            'vacancies' => 'required|numeric', //numeric
+            'job_duration' => 'required', //full_time or part_time 
             'gender' => 'required',
-            'age' => 'required', //this will be range like [20,30]
-            'budget' => 'required', //budget will be from and to
+            'age_from' => 'required', //this will be range like [20,30]
+            'age_to' => 'required', //this will be range like [20,30]
+            'budget_from' => 'required', //budget will be from and to
+            'budget_to' => 'required', //budget will be from and to
 
             // 'jobStartDate' => 'required', //new input
             // 'jobEndDate' => 'required', //new input
-            // 'scriptForAudition' => 'required', //new input
-            'subscription_type' => 'required',
-            'expertise' => 'required',
-            'category' => 'required',
-            'language' => 'required',
-            'job_type' => 'required',
-            'other_categories' => 'required'
+            // 'artist_based_in' => 'required', //new input
+            // 'audition_required' => 'required', //new input
+            // 'audition_script' => 'required', //new input based on the aution_required yes or no
+            'subscription_type' => 'required', //string paid or free
+            'expertise' => 'required', //multiselect
+            'category' => 'required', //single select
+            'language' => 'required', //multiselect
+            'job_type' => 'required', //multiselect
+            'other_categories' => 'required' //multiselect
 
         ];
 

@@ -126,7 +126,7 @@ class ArtistDetailsController extends Controller
         //
     }
 
-    public function updateArtistAlternateDetails(Request $request, $id) {
+    public function updateArtistAlternateDetails(Request $request) {
 
         $rules = [
 
@@ -134,24 +134,27 @@ class ArtistDetailsController extends Controller
             'primary_email' => 'required|email',
             'alternate_number' => 'required|numeric',
             'primary_number' => 'required|numeric',
+            'user_id' => 'required|exists:users,id',
 
         ];
 
         $validatorResponse = $this->validateRequest($request, $rules);
 
+        $requestData = $request->all();
+
         if($validatorResponse !== true) {
             return $this->responseJson(false, HTTPResponse::HTTP_BAD_REQUEST, 'Error', $validatorResponse);
         }
 
-        $isUserAlternateUpdated = $this->artistDetailsRespository->updateAlternateDetails($id, $request->all());
+        $isUserAlternateUpdated = $this->artistDetailsRespository->updateAlternateDetails($requestData['user_id'], $request->all());
 
-        $isUserPrimaryUpdated = $this->userRepository->updatePrimaryDetails($id, $request->all());
+        $isUserPrimaryUpdated = $this->userRepository->updatePrimaryDetails($requestData['user_id'], $request->all());
 
         if(!$isUserAlternateUpdated || !$isUserPrimaryUpdated ) {
             return $this->responseJson(false, 400, 'Error: User Update Failed', []);
         }
 
-        $updatedUser = $this->artistDetailsRespository->findOneBy(['user_id' => $id]);
+        $updatedUser = $this->artistDetailsRespository->findOneBy(['user_id' => $requestData['user_id']]);
         return $this->respondWithItem($updatedUser, $this->artistDetailsTransformer, true, 201, 'Artist Updated');
 
     }
