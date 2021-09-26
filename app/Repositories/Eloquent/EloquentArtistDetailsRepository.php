@@ -1,4 +1,4 @@
-app/Repositories/Eloquent/EloquentUserRepository.php<?php
+<?php
 
 namespace App\Repositories\Eloquent;
 
