@@ -134,8 +134,7 @@ class ArtistDetailsController extends Controller
             'primary_email' => 'required|email',
             'alternate_number' => 'numeric',
             'primary_number' => 'required|numeric',
-            'user_id' => 'required|exists:users,id',
-
+            'user_id' => 'required|exists:artist_details,user_id',
         ];
 
         $validatorResponse = $this->validateRequest($request, $rules);
