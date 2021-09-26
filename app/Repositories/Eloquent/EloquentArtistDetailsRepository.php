@@ -154,8 +154,8 @@ class EloquentArtistDetailsRepository implements ArtistDetailsRepository
     public function updateAlternateDetails($id, array $data)
     {
 
-        $alternateEmail = $data['alternate_email'];
-        $alternateNumber = $data['alternate_number'];
+        $alternateEmail = (!empty($data['alternate_email']) || !isset($data['alternate_email'])) ? $data['alternate_email'] : '';
+        $alternateNumber = (!empty($data['alternate_number']) || !isset($data['alternate_number'])) ? $data['alternate_number'] : '';
             
         $d_data = [];
         $d_data['alternate_email'] = $alternateEmail;
