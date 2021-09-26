@@ -84,12 +84,11 @@ class JobController extends Controller
             'age_to' => 'required', //this will be range like [20,30]
             'budget_from' => 'required', //budget will be from and to
             'budget_to' => 'required', //budget will be from and to
-
-            // 'jobStartDate' => 'required', //new input
-            // 'jobEndDate' => 'required', //new input
-            // 'artist_based_in' => 'required', //new input
-            // 'audition_required' => 'required', //new input
-            // 'audition_script' => 'required', //new input based on the aution_required yes or no
+            'jobStartDate' => 'required', //new input
+            'jobEndDate' => 'required', //new input
+            'artist_based_in' => 'required', //new input
+            'audition_required' => 'required', //new input
+            'audition_script' => 'required', //new input based on the aution_required yes or no
             'subscription_type' => 'required', //string paid or free
             'expertise' => 'required', //multiselect
             'category' => 'required', //single select

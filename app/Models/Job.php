@@ -26,7 +26,7 @@ class Job extends Model
      * @var array
      */
     protected $fillable = [
-        'user_id', 'title', 'publish_date', 'end_date', 'job_location', 'job_description', 'job_tags', 'vacancies', 'job_duration', 'gender', 'age', 'city_leaving', 'language', 'physical_attribute', 'experience', 'education', 'profession_id', 'subscription_type', 'budget', 'budget_time', 'details', 'expertise', 'category', 'language', 'job_type', 'other_categories'
+        'user_id', 'title', 'publish_start_date', 'publish_end_date', 'job_start_date','job_end_date', 'job_location', 'job_description', 'job_tags', 'vacancies', 'job_duration', 'gender', 'age_from','age_to', 'city_leaving', 'physical_attribute', 'experience', 'education', 'profession_id', 'subscription_type', 'budget_from', 'budget_to', 'budget_time', 'details', 'expertise', 'category', 'language', 'job_type', 'other_categories', 'audition_required', 'audition_script'
     ];
 
     /**

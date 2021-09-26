@@ -17,25 +17,28 @@ class NewJobsTable extends Migration
         Schema::create('new_jobs', function(Blueprint $table) {
             $table->id('id');
             $table->foreignId('user_id');
-            $table->string('title');
-            $table->date('publish_date');
-            $table->date('end_date');
+            $table->string('title')->nullable();
+            $table->date('publish_start_date')->nullable();
+            $table->date('publish_end_date')->nullable();
             $table->string('job_location');
             $table->string('job_description');
             $table->string('job_tags');
             $table->string('vacancies');
             $table->string('job_duration');
             $table->json('gender');
-            $table->string('age');
+            $table->string('age_from');
+            $table->string('age_to');
             $table->string('city_leaving');
+            $table->string('budget_from');
+            $table->string('budget_to');
             $table->string('physical_attribute');
             $table->string('experience');
             $table->string('education');
-            $table->foreignId('profession_id');
+            $table->string('job_start_date');
+            $table->string('job_end_date');
             $table->string('subscription_type');
-            $table->string('budget');
-            $table->string('budget_time');
-            $table->string('details');
+            $table->boolean('audition_required')->default(0);
+            $table->boolean('audition_script')->nullable();
             $table->json('expertise');
             $table->json('category');
             $table->json('language');
@@ -50,14 +53,8 @@ class NewJobsTable extends Migration
                 ->onDelete('restrict')
                 ->onUpdate('cascade');
 
-            $table->foreign('profession_id')
-                ->references('id')
-                ->on('profession_master')
-                ->onDelete('restrict')
-                ->onUpdate('cascade');
         });
     }
-
     /**
      * Reverse the migrations.
      *

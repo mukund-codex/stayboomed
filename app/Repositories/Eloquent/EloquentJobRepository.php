@@ -59,37 +59,43 @@ class EloquentJobRepository implements JobRepository
     {      
         $user_id = $data['user_id'];
         $title = $data['title'];
-        $publish_date = $data['publish_date'];
-        $end_date = $data['end_date'];
         $job_location = $data['job_location'];
         $job_description = $data['job_description'];
         $job_tags = $data['job_tags'];
         $vacancies = $data['vacancies'];
         $job_duration = $data['job_duration'];
         $gender = $data['gender'];
-        $age = $data['age'];
-        $budget = $data['budget'];
-        $language = $data['language'];
         $subscription_type = $data['subscription_type'];
         $expertise = $data['expertise'];
         $category = $data['category'];
         $language = $data['language'];
         $job_type = $data['job_type'];
         $other_categories = $data['other_categories'];
-            
+        
+        $publish_start_date = $data['publish_start_date'];
+        $publish_end_date = $data['publish_end_date'];
+        $jobStartDate = $data['jobStartDate'];
+        $jobEndDate = $data['jobEndDate'];
+        $age_to = $data['age_to'];
+        $age_from = $data['age_from'];
+        $budget_from = $data['budget_from'];
+        $budget_to = $data['budget_to'];
+        $artist_based_in = $data['artist_based_in'];
+        $audition_required = $data['audition_required'];
+        $audition_script = $data['audition_script'];
+        $subscription_type = $data['subscription_type'];
+
+
+
         $c_data = [];
         $c_data['user_id'] = $user_id;
         $c_data['title'] = $title;
-        $c_data['publish_date'] = $publish_date;
-        $c_data['end_date'] = $end_date;
         $c_data['job_location'] = $job_location;
         $c_data['job_description'] = $job_description;
         $c_data['job_tags'] = $job_tags;
         $c_data['vacancies'] = $vacancies;
         $c_data['job_duration'] = $job_duration;
         $c_data['gender'] = $gender;
-        $c_data['age'] = $age;
-        $c_data['budget'] = $budget;
         $c_data['language'] = $language;
         $c_data['subscription_type'] = $subscription_type;
         $c_data['expertise'] = $expertise;
@@ -97,6 +103,19 @@ class EloquentJobRepository implements JobRepository
         $c_data['language'] = $language;
         $c_data['job_type'] = $job_type;
         $c_data['other_categories'] = $other_categories;
+
+        $c_data['publish_end_date'] = $publish_end_date;
+        $c_data['publish_start_date'] = $publish_start_date;
+        $c_data['jobEndDate'] = $jobEndDate;
+        $c_data['age_to'] = $age_to;
+        $c_data['age_from'] = $age_from;
+        $c_data['budget_from'] = $budget_from;
+        $c_data['budget_to'] = $budget_to;
+        $c_data['jobStartDate'] = $jobStartDate;
+        $c_data['artist_based_in'] = $artist_based_in;
+        $c_data['audition_required'] = $audition_required;
+        $c_data['audition_script'] = $audition_script;
+        $c_data['subscription_type'] = $subscription_type;
 
         $job = Job::create($c_data);
 
